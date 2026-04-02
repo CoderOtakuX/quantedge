@@ -1,0 +1,11 @@
+fastapi
+uvicorn
+yfinance
+requests
+pandas
+python-dotenv
+httpx
+python-pptx
+nsepython
+lxml
+python-multipart

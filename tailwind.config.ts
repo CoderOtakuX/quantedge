@@ -1,0 +1,82 @@
+import type { Config } from "tailwindcss";
+
+const config: Config = {
+  content: [
+    "./pages/**/*.{js,ts,jsx,tsx,mdx}",
+    "./components/**/*.{js,ts,jsx,tsx,mdx}",
+    "./app/**/*.{js,ts,jsx,tsx,mdx}",
+  ],
+  theme: {
+    extend: {
+      colors: {
+        "on-error-container": "#93000a",
+        "surface-variant": "#e2e3e1",
+        "secondary-fixed-dim": "#c0c6db",
+        "on-primary": "#ffffff",
+        "primary": "#0037b0",
+        "secondary-fixed": "#dce2f7",
+        "surface-bright": "#f9f9f7",
+        "secondary-container": "#d9dff5",
+        "outline-variant": "#c4c5d7",
+        "error-container": "#ffdad6",
+        "surface-container-high": "#e8e8e6",
+        "on-primary-fixed": "#001551",
+        "on-secondary-fixed": "#141b2b",
+        "on-tertiary-fixed": "#00210a",
+        "error": "#ba1a1a",
+        "surface-tint": "#2151da",
+        "surface": "#f5f5f3",
+        "outline": "#747686",
+        "on-tertiary-container": "#88ea9a",
+        "background": "#f5f5f3",
+        "surface-dim": "#dadad8",
+        "primary-fixed-dim": "#b7c4ff",
+        "on-secondary-fixed-variant": "#404758",
+        "on-tertiary": "#ffffff",
+        "secondary": "#575e70",
+        "on-surface-variant": "#434655",
+        "on-primary-fixed-variant": "#0039b5",
+        "on-surface": "#1a1c1b",
+        "surface-container-lowest": "#ffffff",
+        "tertiary-container": "#006b2f",
+        "primary-fixed": "#dce1ff",
+        "on-secondary": "#ffffff",
+        "on-error": "#ffffff",
+        "surface-container": "#eeeeec",
+        "tertiary": "#005022",
+        "on-tertiary-fixed-variant": "#005323",
+        "tertiary-fixed-dim": "#79db8d",
+        "tertiary-fixed": "#95f8a7",
+        "surface-container-low": "#f4f4f2",
+        "surface-container-highest": "#e2e3e1",
+        "on-background": "#1a1c1b",
+        "on-primary-container": "#cad3ff",
+        "inverse-primary": "#b7c4ff",
+        "inverse-surface": "#2f3130",
+        "primary-container": "#1d4ed8",
+        "inverse-on-surface": "#f1f1ef",
+        "on-secondary-container": "#5c6274",
+      },
+      fontFamily: {
+        sans: ["var(--font-inter)", "Inter", "system-ui", "sans-serif"],
+      },
+      borderRadius: {
+        DEFAULT: "0.25rem",
+        lg: "0.875rem", // 14px — card radius
+        xl: "0.875rem",
+        full: "9999px",
+      },
+      animation: {
+        marquee: "marquee 30s linear infinite",
+      },
+      keyframes: {
+        marquee: {
+          from: { transform: "translateX(0)" },
+          to: { transform: "translateX(-50%)" },
+        },
+      },
+    },
+  },
+  plugins: [],
+};
+export default config;

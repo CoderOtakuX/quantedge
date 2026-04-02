@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Sector Intelligence | QuantEdge</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "on-error-container": "#93000a",
+              "surface-variant": "#e2e3e1",
+              "secondary-fixed-dim": "#c0c6db",
+              "on-primary": "#ffffff",
+              "primary": "#0037b0",
+              "secondary-fixed": "#dce2f7",
+              "surface-bright": "#f9f9f7",
+              "secondary-container": "#d9dff5",
+              "outline-variant": "#c4c5d7",
+              "error-container": "#ffdad6",
+              "surface-container-high": "#e8e8e6",
+              "on-primary-fixed": "#001551",
+              "on-secondary-fixed": "#141b2b",
+              "on-tertiary-fixed": "#00210a",
+              "error": "#ba1a1a",
+              "surface-tint": "#2151da",
+              "surface": "#f9f9f7",
+              "outline": "#747686",
+              "on-tertiary-container": "#88ea9a",
+              "background": "#f9f9f7",
+              "surface-dim": "#dadad8",
+              "primary-fixed-dim": "#b7c4ff",
+              "on-secondary-fixed-variant": "#404758",
+              "on-tertiary": "#ffffff",
+              "secondary": "#575e70",
+              "on-surface-variant": "#434655",
+              "on-primary-fixed-variant": "#0039b5",
+              "on-surface": "#1a1c1b",
+              "surface-container-lowest": "#ffffff",
+              "tertiary-container": "#006b2f",
+              "primary-fixed": "#dce1ff",
+              "on-secondary": "#ffffff",
+              "on-error": "#ffffff",
+              "surface-container": "#eeeeec",
+              "tertiary": "#005022",
+              "on-tertiary-fixed-variant": "#005323",
+              "tertiary-fixed-dim": "#79db8d",
+              "tertiary-fixed": "#95f8a7",
+              "surface-container-low": "#f4f4f2",
+              "surface-container-highest": "#e2e3e1",
+              "on-background": "#1a1c1b",
+              "on-primary-container": "#cad3ff",
+              "inverse-primary": "#b7c4ff",
+              "inverse-surface": "#2f3130",
+              "primary-container": "#1d4ed8",
+              "inverse-on-surface": "#f1f1ef",
+              "on-secondary-container": "#5c6274"
+            },
+            fontFamily: {
+              "headline": ["Inter"],
+              "body": ["Inter"],
+              "label": ["Inter"]
+            },
+            borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        .tabular-nums { font-variant-numeric: tabular-nums; }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        .glass-nav { backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
+    </style>
+</head>
+<body class="bg-surface font-body text-on-surface antialiased">
+<!-- Editorial SideBar -->
+<aside class="w-[220px] h-full fixed left-0 top-0 bg-surface-container-low flex flex-col p-6 space-y-8 z-50">
+<div class="flex items-center space-x-3 mb-4">
+<div class="w-8 h-8 bg-primary rounded-lg flex items-center justify-center text-white">
+<span class="material-symbols-outlined text-lg" data-icon="insights">insights</span>
+</div>
+<div>
+<h1 class="text-xl font-semibold text-on-surface tracking-tight">QuantEdge</h1>
+<p class="text-[10px] uppercase tracking-widest text-outline font-bold">Editorial Intelligence</p>
+</div>
+</div>
+<nav class="flex-1 space-y-1">
+<a class="flex items-center px-3 py-2 text-on-surface font-semibold bg-surface-container-lowest rounded-lg duration-200 ease-in-out" href="#">
+<span class="material-symbols-outlined mr-3 text-[20px]" data-icon="dashboard">dashboard</span>
+<span class="text-sm">Dashboard</span>
+</a>
+<a class="flex items-center px-3 py-2 text-outline hover:text-on-surface hover:bg-white/50 rounded-lg duration-200 ease-in-out" href="#">
+<span class="material-symbols-outlined mr-3 text-[20px]" data-icon="filter_list">filter_list</span>
+<span class="text-sm">Screener</span>
+</a>
+<a class="flex items-center px-3 py-2 text-outline hover:text-on-surface hover:bg-white/50 rounded-lg duration-200 ease-in-out" href="#">
+<span class="material-symbols-outlined mr-3 text-[20px]" data-icon="pie_chart">pie_chart</span>
+<span class="text-sm">Portfolios</span>
+</a>
+<a class="flex items-center px-3 py-2 text-outline hover:text-on-surface hover:bg-white/50 rounded-lg duration-200 ease-in-out" href="#">
+<span class="material-symbols-outlined mr-3 text-[20px]" data-icon="psychology">psychology</span>
+<span class="text-sm">AI Analyst</span>
+</a>
+<a class="flex items-center px-3 py-2 text-outline hover:text-on-surface hover:bg-white/50 rounded-lg duration-200 ease-in-out" href="#">
+<span class="material-symbols-outlined mr-3 text-[20px]" data-icon="newspaper">newspaper</span>
+<span class="text-sm">Market News</span>
+</a>
+<a class="flex items-center px-3 py-2 text-outline hover:text-on-surface hover:bg-white/50 rounded-lg duration-200 ease-in-out" href="#">
+<span class="material-symbols-outlined mr-3 text-[20px]" data-icon="settings">settings</span>
+<span class="text-sm">Settings</span>
+</a>
+</nav>
+<div class="mt-auto">
+<button class="w-full py-2.5 px-4 bg-on-surface text-white text-xs font-semibold rounded-lg hover:opacity-90 transition-opacity">
+                Upgrade to Pro
+            </button>
+</div>
+</aside>
+<!-- Top Navigation -->
+<header class="fixed top-0 right-0 w-[calc(100%-220px)] h-14 bg-surface-container-lowest/80 glass-nav z-40 flex items-center justify-between px-8">
+<div class="flex items-center flex-1 max-w-md">
+<div class="relative w-full">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline text-lg" data-icon="search">search</span>
+<input class="w-full bg-surface-container-low border-none rounded-lg py-1.5 pl-10 pr-4 text-sm focus:ring-1 focus:ring-primary placeholder:text-outline/60" placeholder="Search sectors, tickers or news..." type="text"/>
+</div>
+</div>
+<div class="flex items-center space-x-8">
+<nav class="hidden md:flex items-center space-x-6">
+<a class="text-sm font-medium text-primary border-b-2 border-primary pb-1" href="#">Markets</a>
+<a class="text-sm font-medium text-outline hover:text-on-surface transition-all duration-300" href="#">Indices</a>
+<a class="text-sm font-medium text-outline hover:text-on-surface transition-all duration-300" href="#">IPO</a>
+<a class="text-sm font-medium text-outline hover:text-on-surface transition-all duration-300" href="#">Education</a>
+</nav>
+<div class="flex items-center space-x-4 border-l border-outline-variant/20 pl-8">
+<button class="text-outline hover:text-on-surface"><span class="material-symbols-outlined" data-icon="notifications">notifications</span></button>
+<button class="text-outline hover:text-on-surface"><span class="material-symbols-outlined" data-icon="help_outline">help_outline</span></button>
+<img alt="User Profile" class="w-8 h-8 rounded-full border border-outline-variant/30 object-cover" data-alt="professional male portrait with neutral background for user profile avatar" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDJECzWzXgPE2IcDsXEgX1p_n_jtjEGqESUTLaWyjFwOnPR04jjZNVWbFFS96wKq_Pl_AYyd6twFDPhH0n3Z_rdWC68WkKDGV39_KfydPB1rj397k9kaL0975u39r5YuNhi9UIyDqs7mjhI7poicCkehfRne4kBWOUIkxw5U9A_UqChFUn3Ynkot-xJaXj1Csy8S-MZTX-2ASJTIeL0muIA88L9TiFV8Agy95VDITRzybqWeYisSjaLACGsOguMzb8OHWHLqDLa9vaq"/>
+</div>
+</div>
+</header>
+<!-- Ticker Tape -->
+<div class="fixed top-14 right-0 w-[calc(100%-220px)] h-8 bg-surface-container-lowest flex items-center overflow-hidden z-30">
+<div class="flex items-center space-x-8 whitespace-nowrap animate-scroll px-8">
+<div class="flex items-center space-x-2">
+<span class="text-[10px] font-bold uppercase tracking-wider text-outline">NIFTY 50</span>
+<span class="text-xs font-semibold tabular-nums text-tertiary">22,147.50 (+0.42%)</span>
+</div>
+<div class="flex items-center space-x-2">
+<span class="text-[10px] font-bold uppercase tracking-wider text-outline">SENSEX</span>
+<span class="text-xs font-semibold tabular-nums text-tertiary">73,088.33 (+0.48%)</span>
+</div>
+<div class="flex items-center space-x-2">
+<span class="text-[10px] font-bold uppercase tracking-wider text-outline">NASDAQ</span>
+<span class="text-xs font-semibold tabular-nums text-error">15,976.25 (-0.13%)</span>
+</div>
+<div class="flex items-center space-x-2">
+<span class="text-[10px] font-bold uppercase tracking-wider text-outline">USD/INR</span>
+<span class="text-xs font-semibold tabular-nums text-on-surface">82.94 (+0.02%)</span>
+</div>
+<div class="flex items-center space-x-2">
+<span class="text-[10px] font-bold uppercase tracking-wider text-outline">GOLD</span>
+<span class="text-xs font-semibold tabular-nums text-tertiary">62,345 (+0.81%)</span>
+</div>
+<div class="flex items-center space-x-2">
+<span class="text-[10px] font-bold uppercase tracking-wider text-outline">CRUDE OIL</span>
+<span class="text-xs font-semibold tabular-nums text-error">78.14 (-0.56%)</span>
+</div>
+</div>
+</div>
+<!-- Main Content -->
+<main class="ml-[220px] mt-24 p-8">
+<!-- Editorial Header -->
+<header class="mb-12">
+<div class="flex items-end justify-between border-b border-outline-variant/10 pb-8">
+<div>
+<h2 class="text-4xl font-light text-on-surface-variant tracking-tight">
+                        Sector <span class="font-semibold text-on-surface">Intelligence</span>
+</h2>
+<p class="text-outline mt-2 max-w-xl">Curated performance insights across major industrial verticals. Market breadth is currently <span class="text-tertiary font-semibold">Positive</span> with 7/11 sectors in green.</p>
+</div>
+<div class="flex space-x-12">
+<div class="text-right">
+<span class="block text-[10px] uppercase font-bold tracking-widest text-outline mb-1">Advancing</span>
+<span class="text-2xl font-semibold text-tertiary tabular-nums">1,422</span>
+</div>
+<div class="text-right border-l border-outline-variant/20 pl-12">
+<span class="block text-[10px] uppercase font-bold tracking-widest text-outline mb-1">Declining</span>
+<span class="text-2xl font-semibold text-error tabular-nums">684</span>
+</div>
+</div>
+</div>
+</header>
+<!-- Sector Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+<!-- Card 1: IT -->
+<div class="bg-surface-container-lowest p-6 rounded-xl border border-transparent hover:border-outline-variant/20 transition-all duration-300">
+<div class="flex justify-between items-start mb-6">
+<div>
+<span class="text-[11px] font-bold uppercase tracking-widest text-outline block mb-1">NIFTY</span>
+<h3 class="text-xl font-bold">IT SECTOR</h3>
+</div>
+<div class="w-10 h-10 rounded-lg bg-surface-container flex items-center justify-center">
+<span class="material-symbols-outlined text-primary" data-icon="terminal">terminal</span>
+</div>
+</div>
+<div class="mb-8">
+<div class="flex items-baseline space-x-2">
+<span class="text-4xl font-semibold tabular-nums">+2.48%</span>
+<span class="material-symbols-outlined text-tertiary text-xl" data-icon="trending_up">trending_up</span>
+</div>
+<p class="text-xs text-outline mt-1 font-medium">10 Constituents</p>
+</div>
+<div class="pt-4 border-t border-surface-container flex items-center justify-between">
+<div>
+<span class="block text-[10px] uppercase font-bold text-outline">Top Gainer</span>
+<span class="text-sm font-semibold">TCS</span>
+</div>
+<span class="text-xs font-bold text-tertiary tabular-nums">+4.12%</span>
+</div>
+</div>
+<!-- Card 2: Auto -->
+<div class="bg-surface-container-lowest p-6 rounded-xl border border-transparent hover:border-outline-variant/20 transition-all duration-300">
+<div class="flex justify-between items-start mb-6">
+<div>
+<span class="text-[11px] font-bold uppercase tracking-widest text-outline block mb-1">NIFTY</span>
+<h3 class="text-xl font-bold">AUTO</h3>
+</div>
+<div class="w-10 h-10 rounded-lg bg-surface-container flex items-center justify-center">
+<span class="material-symbols-outlined text-primary" data-icon="directions_car">directions_car</span>
+</div>
+</div>
+<div class="mb-8">
+<div class="flex items-baseline space-x-2">
+<span class="text-4xl font-semibold tabular-nums">+1.15%</span>
+<span class="material-symbols-outlined text-tertiary text-xl" data-icon="trending_up">trending_up</span>
+</div>
+<p class="text-xs text-outline mt-1 font-medium">15 Constituents</p>
+</div>
+<div class="pt-4 border-t border-surface-container flex items-center justify-between">
+<div>
+<span class="block text-[10px] uppercase font-bold text-outline">Top Gainer</span>
+<span class="text-sm font-semibold">M&amp;M</span>
+</div>
+<span class="text-xs font-bold text-tertiary tabular-nums">+3.85%</span>
+</div>
+</div>
+<!-- Card 3: Bank -->
+<div class="bg-surface-container-lowest p-6 rounded-xl border border-transparent hover:border-outline-variant/20 transition-all duration-300">
+<div class="flex justify-between items-start mb-6">
+<div>
+<span class="text-[11px] font-bold uppercase tracking-widest text-outline block mb-1">NIFTY</span>
+<h3 class="text-xl font-bold">BANKING</h3>
+</div>
+<div class="w-10 h-10 rounded-lg bg-surface-container flex items-center justify-center">
+<span class="material-symbols-outlined text-primary" data-icon="account_balance">account_balance</span>
+</div>
+</div>
+<div class="mb-8">
+<div class="flex items-baseline space-x-2">
+<span class="text-4xl font-semibold tabular-nums text-error">-0.42%</span>
+<span class="material-symbols-outlined text-error text-xl" data-icon="trending_down">trending_down</span>
+</div>
+<p class="text-xs text-outline mt-1 font-medium">12 Constituents</p>
+</div>
+<div class="pt-4 border-t border-surface-container flex items-center justify-between">
+<div>
+<span class="block text-[10px] uppercase font-bold text-outline">Top Gainer</span>
+<span class="text-sm font-semibold">ICICIBANK</span>
+</div>
+<span class="text-xs font-bold text-tertiary tabular-nums">+0.88%</span>
+</div>
+</div>
+<!-- Card 4: FMCG -->
+<div class="bg-surface-container-lowest p-6 rounded-xl border border-transparent hover:border-outline-variant/20 transition-all duration-300">
+<div class="flex justify-between items-start mb-6">
+<div>
+<span class="text-[11px] font-bold uppercase tracking-widest text-outline block mb-1">NIFTY</span>
+<h3 class="text-xl font-bold">FMCG</h3>
+</div>
+<div class="w-10 h-10 rounded-lg bg-surface-container flex items-center justify-center">
+<span class="material-symbols-outlined text-primary" data-icon="shopping_basket">shopping_basket</span>
+</div>
+</div>
+<div class="mb-8">
+<div class="flex items-baseline space-x-2">
+<span class="text-4xl font-semibold tabular-nums">+0.67%</span>
+<span class="material-symbols-outlined text-tertiary text-xl" data-icon="trending_up">trending_up</span>
+</div>
+<p class="text-xs text-outline mt-1 font-medium">15 Constituents</p>
+</div>
+<div class="pt-4 border-t border-surface-container flex items-center justify-between">
+<div>
+<span class="block text-[10px] uppercase font-bold text-outline">Top Gainer</span>
+<span class="text-sm font-semibold">TATACONSUM</span>
+</div>
+<span class="text-xs font-bold text-tertiary tabular-nums">+2.14%</span>
+</div>
+</div>
+<!-- Card 5: Pharma -->
+<div class="bg-surface-container-lowest p-6 rounded-xl border border-transparent hover:border-outline-variant/20 transition-all duration-300">
+<div class="flex justify-between items-start mb-6">
+<div>
+<span class="text-[11px] font-bold uppercase tracking-widest text-outline block mb-1">NIFTY</span>
+<h3 class="text-xl font-bold">PHARMA</h3>
+</div>
+<div class="w-10 h-10 rounded-lg bg-surface-container flex items-center justify-center">
+<span class="material-symbols-outlined text-primary" data-icon="medical_services">medical_services</span>
+</div>
+</div>
+<div class="mb-8">
+<div class="flex items-baseline space-x-2">
+<span class="text-4xl font-semibold tabular-nums">+1.82%</span>
+<span class="material-symbols-outlined text-tertiary text-xl" data-icon="trending_up">trending_up</span>
+</div>
+<p class="text-xs text-outline mt-1 font-medium">20 Constituents</p>
+</div>
+<div class="pt-4 border-t border-surface-container flex items-center justify-between">
+<div>
+<span class="block text-[10px] uppercase font-bold text-outline">Top Gainer</span>
+<span class="text-sm font-semibold">CIPLA</span>
+</div>
+<span class="text-xs font-bold text-tertiary tabular-nums">+5.20%</span>
+</div>
+</div>
+<!-- Card 6: Metal -->
+<div class="bg-surface-container-lowest p-6 rounded-xl border border-transparent hover:border-outline-variant/20 transition-all duration-300">
+<div class="flex justify-between items-start mb-6">
+<div>
+<span class="text-[11px] font-bold uppercase tracking-widest text-outline block mb-1">NIFTY</span>
+<h3 class="text-xl font-bold">METAL</h3>
+</div>
+<div class="w-10 h-10 rounded-lg bg-surface-container flex items-center justify-center">
+<span class="material-symbols-outlined text-primary" data-icon="precision_manufacturing">precision_manufacturing</span>
+</div>
+</div>
+<div class="mb-8">
+<div class="flex items-baseline space-x-2">
+<span class="text-4xl font-semibold tabular-nums text-error">-1.24%</span>
+<span class="material-symbols-outlined text-error text-xl" data-icon="trending_down">trending_down</span>
+</div>
+<p class="text-xs text-outline mt-1 font-medium">15 Constituents</p>
+</div>
+<div class="pt-4 border-t border-surface-container flex items-center justify-between">
+<div>
+<span class="block text-[10px] uppercase font-bold text-outline">Top Gainer</span>
+<span class="text-sm font-semibold">HINDALCO</span>
+</div>
+<span class="text-xs font-bold text-tertiary tabular-nums">+0.45%</span>
+</div>
+</div>
+<!-- Card 7: Energy -->
+<div class="bg-surface-container-lowest p-6 rounded-xl border border-transparent hover:border-outline-variant/20 transition-all duration-300">
+<div class="flex justify-between items-start mb-6">
+<div>
+<span class="text-[11px] font-bold uppercase tracking-widest text-outline block mb-1">NIFTY</span>
+<h3 class="text-xl font-bold">ENERGY</h3>
+</div>
+<div class="w-10 h-10 rounded-lg bg-surface-container flex items-center justify-center">
+<span class="material-symbols-outlined text-primary" data-icon="bolt">bolt</span>
+</div>
+</div>
+<div class="mb-8">
+<div class="flex items-baseline space-x-2">
+<span class="text-4xl font-semibold tabular-nums">+0.12%</span>
+<span class="material-symbols-outlined text-tertiary text-xl" data-icon="trending_up">trending_up</span>
+</div>
+<p class="text-xs text-outline mt-1 font-medium">10 Constituents</p>
+</div>
+<div class="pt-4 border-t border-surface-container flex items-center justify-between">
+<div>
+<span class="block text-[10px] uppercase font-bold text-outline">Top Gainer</span>
+<span class="text-sm font-semibold">RELIANCE</span>
+</div>
+<span class="text-xs font-bold text-tertiary tabular-nums">+1.32%</span>
+</div>
+</div>
+<!-- Card 8: Realty -->
+<div class="bg-surface-container-lowest p-6 rounded-xl border border-transparent hover:border-outline-variant/20 transition-all duration-300">
+<div class="flex justify-between items-start mb-6">
+<div>
+<span class="text-[11px] font-bold uppercase tracking-widest text-outline block mb-1">NIFTY</span>
+<h3 class="text-xl font-bold">REALTY</h3>
+</div>
+<div class="w-10 h-10 rounded-lg bg-surface-container flex items-center justify-center">
+<span class="material-symbols-outlined text-primary" data-icon="apartment">apartment</span>
+</div>
+</div>
+<div class="mb-8">
+<div class="flex items-baseline space-x-2">
+<span class="text-4xl font-semibold tabular-nums text-error">-0.92%</span>
+<span class="material-symbols-outlined text-error text-xl" data-icon="trending_down">trending_down</span>
+</div>
+<p class="text-xs text-outline mt-1 font-medium">10 Constituents</p>
+</div>
+<div class="pt-4 border-t border-surface-container flex items-center justify-between">
+<div>
+<span class="block text-[10px] uppercase font-bold text-outline">Top Gainer</span>
+<span class="text-sm font-semibold">DLF</span>
+</div>
+<span class="text-xs font-bold text-tertiary tabular-nums">+0.22%</span>
+</div>
+</div>
+</div>
+<!-- Featured Analysis (Asymmetric Layout) -->
+<section class="mt-16 grid grid-cols-12 gap-8">
+<div class="col-span-12 lg:col-span-8 bg-surface-container-low rounded-2xl p-8 relative overflow-hidden flex flex-col justify-end min-h-[400px]">
+<div class="absolute inset-0 z-0">
+<img alt="Technical Analysis background" class="w-full h-full object-cover opacity-20 grayscale mix-blend-multiply" data-alt="high contrast dark financial market data screen with glowing lines and numbers reflecting technical analysis" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAp1Fo6D522cBvlHMacb6cCt9NnnYerThxqB8Fk6MoRCA9GliXiGis_BfoB5G1O2uRsFpRFp4edoWFGeyHPv1S2aaV_wsmd0_DQHCqKBbcCWxV_rppOWC0ZfhBgHKTwb7mi8ae0M47CUiHfItjCXazgDYkQnybUBNb_spB2LRyqs5Ox5bDHyuhypftKi7AD2xndX3HUJ8Us5Yasjv9M631LNy-R0XICLfz7za2Ywp4Ld2SK26JtRtBcN0IcFLC1YcheEZQkZa0D26B_"/>
+</div>
+<div class="relative z-10">
+<span class="inline-block px-3 py-1 bg-primary text-white text-[10px] font-bold uppercase tracking-widest rounded mb-4">Market Deep Dive</span>
+<h3 class="text-3xl font-bold max-w-lg leading-tight mb-4">IT Sector: Why the 2.4% Surge signals a multi-quarter breakout</h3>
+<p class="text-on-surface-variant max-w-xl mb-6">QuantEdge Analyst reports suggest institutional rotation back into defensive large-cap IT stocks as global yield curves stabilize.</p>
+<button class="flex items-center space-x-2 text-primary font-bold text-sm group">
+<span>Read Full Editorial</span>
+<span class="material-symbols-outlined group-hover:translate-x-1 transition-transform" data-icon="arrow_forward">arrow_forward</span>
+</button>
+</div>
+</div>
+<div class="col-span-12 lg:col-span-4 space-y-8">
+<div class="bg-surface-container-lowest p-6 rounded-2xl border border-outline-variant/10">
+<h4 class="text-[11px] font-bold uppercase tracking-widest text-outline mb-4">Correlation Matrix</h4>
+<div class="space-y-4">
+<div class="flex items-center justify-between">
+<span class="text-sm font-medium">Bank vs IT</span>
+<span class="text-sm font-bold tabular-nums">0.12 (Low)</span>
+</div>
+<div class="w-full bg-surface-container rounded-full h-1.5 overflow-hidden">
+<div class="bg-primary h-full w-[12%]"></div>
+</div>
+<div class="flex items-center justify-between mt-4">
+<span class="text-sm font-medium">Auto vs Metal</span>
+<span class="text-sm font-bold tabular-nums">0.84 (High)</span>
+</div>
+<div class="w-full bg-surface-container rounded-full h-1.5 overflow-hidden">
+<div class="bg-primary h-full w-[84%]"></div>
+</div>
+</div>
+</div>
+<div class="bg-surface-container-lowest p-6 rounded-2xl border border-outline-variant/10">
+<h4 class="text-[11px] font-bold uppercase tracking-widest text-outline mb-4">Next Earnings (IT)</h4>
+<div class="space-y-4">
+<div class="flex items-center space-x-3">
+<div class="w-10 h-10 rounded bg-surface-container flex items-center justify-center font-bold text-primary">TCS</div>
+<div>
+<span class="block text-sm font-bold">April 12, 2024</span>
+<span class="text-xs text-outline">Projected EPS: 38.40</span>
+</div>
+</div>
+<div class="flex items-center space-x-3">
+<div class="w-10 h-10 rounded bg-surface-container flex items-center justify-center font-bold text-primary">INFY</div>
+<div>
+<span class="block text-sm font-bold">April 18, 2024</span>
+<span class="text-xs text-outline">Projected EPS: 18.25</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+</main>
+<style>
+        @keyframes scroll {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-100%); }
+        }
+        .animate-scroll {
+            display: inline-flex;
+            animation: scroll 40s linear infinite;
+        }
+    </style>
+</body></html>

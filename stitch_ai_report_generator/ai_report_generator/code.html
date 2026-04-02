@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>AI Report Generator - QuantEdge</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "on-primary-container": "#cad3ff",
+              "on-secondary": "#ffffff",
+              "tertiary-fixed-dim": "#79db8d",
+              "on-secondary-container": "#5c6274",
+              "primary-fixed": "#dce1ff",
+              "surface-container": "#eeeeec",
+              "secondary": "#575e70",
+              "on-error": "#ffffff",
+              "surface-container-low": "#f4f4f2",
+              "on-tertiary": "#ffffff",
+              "on-primary-fixed": "#001551",
+              "on-background": "#1a1c1b",
+              "secondary-container": "#d9dff5",
+              "on-surface-variant": "#434655",
+              "surface-dim": "#dadad8",
+              "primary-container": "#1d4ed8",
+              "on-tertiary-fixed-variant": "#005323",
+              "tertiary-container": "#006b2f",
+              "error-container": "#ffdad6",
+              "primary-fixed-dim": "#b7c4ff",
+              "on-tertiary-container": "#88ea9a",
+              "outline": "#747686",
+              "outline-variant": "#c4c5d7",
+              "surface-tint": "#2151da",
+              "surface-variant": "#e2e3e1",
+              "inverse-on-surface": "#f1f1ef",
+              "tertiary": "#005022",
+              "inverse-surface": "#2f3130",
+              "secondary-fixed": "#dce2f7",
+              "surface-container-lowest": "#ffffff",
+              "tertiary-fixed": "#95f8a7",
+              "surface-bright": "#f9f9f7",
+              "error": "#ba1a1a",
+              "primary": "#0037b0",
+              "surface": "#f9f9f7",
+              "on-primary-fixed-variant": "#0039b5",
+              "on-surface": "#1a1c1b",
+              "on-secondary-fixed": "#141b2b",
+              "on-tertiary-fixed": "#00210a",
+              "on-primary": "#ffffff",
+              "surface-container-high": "#e8e8e6",
+              "background": "#f9f9f7",
+              "inverse-primary": "#b7c4ff",
+              "secondary-fixed-dim": "#c0c6db",
+              "surface-container-highest": "#e2e3e1",
+              "on-secondary-fixed-variant": "#404758",
+              "on-error-container": "#93000a"
+            },
+            fontFamily: {
+              "headline": ["Inter"],
+              "body": ["Inter"],
+              "label": ["Inter"]
+            },
+            borderRadius: {"DEFAULT": "0.25rem", "lg": "14px", "xl": "0.75rem", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+<style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #F5F5F3;
+            -webkit-font-smoothing: antialiased;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .tabular-nums {
+            font-variant-numeric: tabular-nums;
+        }
+    </style>
+</head>
+<body class="text-on-background">
+<!-- Top Navigation Bar -->
+<nav class="fixed top-0 left-0 right-0 h-14 bg-white/80 backdrop-blur-md z-50 border-b border-outline-variant/20">
+<div class="flex justify-between items-center w-full px-6 max-w-[1440px] mx-auto h-full">
+<div class="flex items-center gap-2">
+<span class="bg-slate-900 text-white rounded-lg p-1.5 font-bold text-sm tracking-tight">QE</span>
+<span class="text-xl font-semibold tracking-tight text-slate-900">QuantEdge</span>
+</div>
+<div class="flex items-center gap-4">
+<div class="w-8 h-8 rounded-full overflow-hidden border border-outline-variant">
+<img alt="User Profile" data-alt="close-up portrait of a professional analyst in a modern office environment with soft natural lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBl6aTaBAAcnWQ-B50iy3BsYDHMKLpBYxrB4aAJaRJ9fC5McqP1h2LMOk3VHyavL1rnHFRcjYV2E98pT3_Df4H7Gtb67W-kXd-JNPuc8ggHHYrZPEFAAhHYiXcGIMacBsc4GiKRo7pmIy-FJsixqV_8A1QtpLuyRJU2aAIyantt2T7SL-Y4625qq1spRGAJb3xB1lhp8RMqrgIRip_0R4nrkeL34G6VJVbHTDB8be_ENDhh8YnBxypcqkA8vBJSWUJNyviZCNEBqZnf"/>
+</div>
+</div>
+</div>
+</nav>
+<!-- Main Content Canvas -->
+<main class="pt-24 pb-20 px-6 max-w-[640px] mx-auto">
+<!-- Header Section -->
+<header class="mb-8">
+<span class="text-[11px] font-semibold uppercase tracking-[0.08em] text-outline mb-1 block">AI REPORT GENERATOR</span>
+<h1 class="text-[32px] leading-tight text-slate-900">
+<span class="font-normal">Stock Analysis</span> <span class="font-semibold">Report</span>
+</h1>
+<div class="mt-4 flex items-center gap-3">
+<span class="inline-flex items-center px-2 py-1 rounded bg-tertiary-fixed text-on-tertiary-fixed text-xs font-semibold tracking-wide">
+                    RELIANCE.NS
+                </span>
+<span class="text-secondary text-sm">
+                    Reliance Industries Ltd · 8 slides
+                </span>
+</div>
+</header>
+<!-- Progress Card -->
+<section class="bg-surface-container-lowest rounded-lg p-6 mb-8 border border-outline-variant/20">
+<div class="flex justify-between items-center mb-4">
+<h3 class="text-slate-900 font-medium text-sm">Generating slide 6 of 8</h3>
+<span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-secondary-container text-primary-container text-[11px] font-semibold uppercase tracking-wider">
+<span class="w-1.5 h-1.5 rounded-full bg-primary-container animate-pulse"></span>
+                    In progress
+                </span>
+</div>
+<!-- Progress Bar -->
+<div class="w-full h-2 bg-surface-container rounded-full overflow-hidden mb-6">
+<div class="h-full bg-primary-container transition-all duration-500" style="width: 72%;"></div>
+</div>
+<!-- Step Dots/Bars -->
+<div class="flex gap-2 mb-6">
+<!-- Completed -->
+<div class="flex-1 h-1.5 rounded-full bg-primary-container"></div>
+<div class="flex-1 h-1.5 rounded-full bg-primary-container"></div>
+<div class="flex-1 h-1.5 rounded-full bg-primary-container"></div>
+<div class="flex-1 h-1.5 rounded-full bg-primary-container"></div>
+<div class="flex-1 h-1.5 rounded-full bg-primary-container"></div>
+<!-- Active -->
+<div class="flex-1 h-1.5 rounded-full bg-primary-container/30"></div>
+<!-- Pending -->
+<div class="flex-1 h-1.5 rounded-full bg-surface-container"></div>
+<div class="flex-1 h-1.5 rounded-full bg-surface-container"></div>
+</div>
+<p class="text-slate-500 text-sm">
+                Analyzing market data and generating AI insights...
+            </p>
+</section>
+<!-- Slides List Card -->
+<section class="bg-surface-container-lowest rounded-lg overflow-hidden border border-outline-variant/20 mb-8">
+<div class="divide-y divide-outline-variant/10">
+<!-- Slide 1: Done -->
+<div class="h-[60px] flex items-center px-4 hover:bg-surface-container-low transition-colors group">
+<div class="w-6 h-6 rounded-full border border-primary-container flex items-center justify-center text-[10px] font-bold text-primary-container mr-4">1</div>
+<div class="flex-1 min-w-0">
+<p class="text-slate-900 text-sm font-medium truncate">Executive Summary</p>
+<p class="text-slate-400 text-[11px] truncate">Strategic overview and key highlights</p>
+</div>
+<button class="flex items-center gap-1 text-primary-container text-xs font-semibold px-3 py-1.5 rounded-md hover:bg-primary-container/5">
+<span class="material-symbols-outlined text-sm">visibility</span>
+                        View
+                    </button>
+</div>
+<!-- Slide 2: Done -->
+<div class="h-[60px] flex items-center px-4 hover:bg-surface-container-low transition-colors group">
+<div class="w-6 h-6 rounded-full border border-primary-container flex items-center justify-center text-[10px] font-bold text-primary-container mr-4">2</div>
+<div class="flex-1 min-w-0">
+<p class="text-slate-900 text-sm font-medium truncate">Financial Performance</p>
+<p class="text-slate-400 text-[11px] truncate">Revenue growth and EBITDA margins</p>
+</div>
+<button class="flex items-center gap-1 text-primary-container text-xs font-semibold px-3 py-1.5 rounded-md hover:bg-primary-container/5">
+<span class="material-symbols-outlined text-sm">visibility</span>
+                        View
+                    </button>
+</div>
+<!-- Slide 3: Done -->
+<div class="h-[60px] flex items-center px-4 hover:bg-surface-container-low transition-colors group">
+<div class="w-6 h-6 rounded-full border border-primary-container flex items-center justify-center text-[10px] font-bold text-primary-container mr-4">3</div>
+<div class="flex-1 min-w-0">
+<p class="text-slate-900 text-sm font-medium truncate">Segment Analysis</p>
+<p class="text-slate-400 text-[11px] truncate">O2C, Retail, and Jio digital services</p>
+</div>
+<button class="flex items-center gap-1 text-primary-container text-xs font-semibold px-3 py-1.5 rounded-md hover:bg-primary-container/5">
+<span class="material-symbols-outlined text-sm">visibility</span>
+                        View
+                    </button>
+</div>
+<!-- Slide 4: Done -->
+<div class="h-[60px] flex items-center px-4 hover:bg-surface-container-low transition-colors group">
+<div class="w-6 h-6 rounded-full border border-primary-container flex items-center justify-center text-[10px] font-bold text-primary-container mr-4">4</div>
+<div class="flex-1 min-w-0">
+<p class="text-slate-900 text-sm font-medium truncate">Competitive Landscape</p>
+<p class="text-slate-400 text-[11px] truncate">Peer comparison and market share</p>
+</div>
+<button class="flex items-center gap-1 text-primary-container text-xs font-semibold px-3 py-1.5 rounded-md hover:bg-primary-container/5">
+<span class="material-symbols-outlined text-sm">visibility</span>
+                        View
+                    </button>
+</div>
+<!-- Slide 5: Done -->
+<div class="h-[60px] flex items-center px-4 hover:bg-surface-container-low transition-colors group">
+<div class="w-6 h-6 rounded-full border border-primary-container flex items-center justify-center text-[10px] font-bold text-primary-container mr-4">5</div>
+<div class="flex-1 min-w-0">
+<p class="text-slate-900 text-sm font-medium truncate">Risk Assessment</p>
+<p class="text-slate-400 text-[11px] truncate">Macroeconomic and regulatory risks</p>
+</div>
+<button class="flex items-center gap-1 text-primary-container text-xs font-semibold px-3 py-1.5 rounded-md hover:bg-primary-container/5">
+<span class="material-symbols-outlined text-sm">visibility</span>
+                        View
+                    </button>
+</div>
+<!-- Slide 6: Active -->
+<div class="h-[60px] flex items-center px-4 bg-primary-container/5">
+<div class="w-6 h-6 rounded-full bg-primary-container flex items-center justify-center text-[10px] font-bold text-white mr-4">6</div>
+<div class="flex-1 min-w-0">
+<p class="text-slate-900 text-sm font-medium truncate">Future Growth Opportunities</p>
+<p class="text-primary-container text-[11px] font-medium truncate italic">Generating now...</p>
+</div>
+<div class="w-5 h-5 border-2 border-primary-container/20 border-t-primary-container rounded-full animate-spin"></div>
+</div>
+<!-- Slide 7: Pending -->
+<div class="h-[60px] flex items-center px-4 opacity-50">
+<div class="w-6 h-6 rounded-full border border-slate-300 flex items-center justify-center text-[10px] font-bold text-slate-400 mr-4">7</div>
+<div class="flex-1 min-w-0">
+<p class="text-slate-900 text-sm font-medium truncate">Valuation &amp; Recommendation</p>
+<p class="text-slate-400 text-[11px] truncate">DCF analysis and target price</p>
+</div>
+<span class="text-slate-300 px-4">—</span>
+</div>
+<!-- Slide 8: Pending -->
+<div class="h-[60px] flex items-center px-4 opacity-50">
+<div class="w-6 h-6 rounded-full border border-slate-300 flex items-center justify-center text-[10px] font-bold text-slate-400 mr-4">8</div>
+<div class="flex-1 min-w-0">
+<p class="text-slate-900 text-sm font-medium truncate">Appendix &amp; Methodology</p>
+<p class="text-slate-400 text-[11px] truncate">Data sources and calculation models</p>
+</div>
+<span class="text-slate-300 px-4">—</span>
+</div>
+</div>
+</section>
+<!-- Action Buttons -->
+<div class="flex flex-col gap-3 mb-12">
+<button class="w-full bg-slate-900 text-white font-medium py-3 rounded-lg opacity-40 cursor-not-allowed flex items-center justify-center gap-2 transition-all">
+<span class="material-symbols-outlined text-sm">download</span>
+                Download as PPTX
+            </button>
+<button class="w-full bg-transparent border border-slate-900 text-slate-900 font-medium py-3 rounded-lg hover:bg-slate-50 transition-all flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-sm">refresh</span>
+                Regenerate report
+            </button>
+</div>
+<!-- Footer Note -->
+<footer class="text-center">
+<p class="text-[12px] text-slate-400 leading-relaxed">
+                Report generated using QuantEdge proprietary AI models. Data sources include NSE historical price action, quarterly filings, and consensus analyst estimates. Not financial advice.
+            </p>
+</footer>
+</main>
+</body></html>

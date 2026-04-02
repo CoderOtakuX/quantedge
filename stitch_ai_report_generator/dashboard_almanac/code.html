@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>QuantEdge | Market Intelligence</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "on-error-container": "#93000a",
+              "surface-variant": "#e2e3e1",
+              "secondary-fixed-dim": "#c0c6db",
+              "on-primary": "#ffffff",
+              "primary": "#0037b0",
+              "secondary-fixed": "#dce2f7",
+              "surface-bright": "#f9f9f7",
+              "secondary-container": "#d9dff5",
+              "outline-variant": "#c4c5d7",
+              "error-container": "#ffdad6",
+              "surface-container-high": "#e8e8e6",
+              "on-primary-fixed": "#001551",
+              "on-secondary-fixed": "#141b2b",
+              "on-tertiary-fixed": "#00210a",
+              "error": "#ba1a1a",
+              "surface-tint": "#2151da",
+              "surface": "#f9f9f7",
+              "outline": "#747686",
+              "on-tertiary-container": "#88ea9a",
+              "background": "#f9f9f7",
+              "surface-dim": "#dadad8",
+              "primary-fixed-dim": "#b7c4ff",
+              "on-secondary-fixed-variant": "#404758",
+              "on-tertiary": "#ffffff",
+              "secondary": "#575e70",
+              "on-surface-variant": "#434655",
+              "on-primary-fixed-variant": "#0039b5",
+              "on-surface": "#1a1c1b",
+              "surface-container-lowest": "#ffffff",
+              "tertiary-container": "#006b2f",
+              "primary-fixed": "#dce1ff",
+              "on-secondary": "#ffffff",
+              "on-error": "#ffffff",
+              "surface-container": "#eeeeec",
+              "tertiary": "#005022",
+              "on-tertiary-fixed-variant": "#005323",
+              "tertiary-fixed-dim": "#79db8d",
+              "tertiary-fixed": "#95f8a7",
+              "surface-container-low": "#f4f4f2",
+              "surface-container-highest": "#e2e3e1",
+              "on-background": "#1a1c1b",
+              "on-primary-container": "#cad3ff",
+              "inverse-primary": "#b7c4ff",
+              "inverse-surface": "#2f3130",
+              "primary-container": "#1d4ed8",
+              "inverse-on-surface": "#f1f1ef",
+              "on-secondary-container": "#5c6274"
+            },
+            fontFamily: {
+              "headline": ["Inter"],
+              "body": ["Inter"],
+              "label": ["Inter"]
+            },
+            borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+<style>
+        body { background-color: #F5F5F3; }
+        .tabular-nums { font-variant-numeric: tabular-nums; }
+        .ghost-border { border: 0.5px solid rgba(116, 118, 134, 0.2); }
+        .hide-scrollbar::-webkit-scrollbar { display: none; }
+    </style>
+</head>
+<body class="font-body text-on-surface antialiased">
+<!-- Sidebar Navigation -->
+<aside class="w-[220px] h-full fixed left-0 top-0 bg-[#F4F4F2] dark:bg-slate-900 flex flex-col p-6 space-y-8 z-50">
+<div class="flex flex-col space-y-1">
+<span class="text-xl font-semibold text-slate-900 dark:text-white tracking-tight">QuantEdge</span>
+<span class="text-[11px] font-semibold uppercase tracking-[0.08em] text-slate-500">Editorial Intelligence</span>
+</div>
+<nav class="flex-1 flex flex-col space-y-1">
+<a class="flex items-center space-x-3 px-3 py-2 text-[#111827] dark:text-white font-semibold bg-white dark:bg-slate-800 rounded-lg duration-200 ease-in-out" href="#">
+<span class="material-symbols-outlined text-[20px]" data-icon="dashboard">dashboard</span>
+<span class="text-sm">Dashboard</span>
+</a>
+<a class="flex items-center space-x-3 px-3 py-2 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 hover:bg-white/50 dark:hover:bg-slate-800/50 transition-colors duration-200 ease-in-out rounded-lg" href="#">
+<span class="material-symbols-outlined text-[20px]" data-icon="filter_list">filter_list</span>
+<span class="text-sm">Screener</span>
+</a>
+<a class="flex items-center space-x-3 px-3 py-2 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 hover:bg-white/50 dark:hover:bg-slate-800/50 transition-colors duration-200 ease-in-out rounded-lg" href="#">
+<span class="material-symbols-outlined text-[20px]" data-icon="pie_chart">pie_chart</span>
+<span class="text-sm">Portfolios</span>
+</a>
+<a class="flex items-center space-x-3 px-3 py-2 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 hover:bg-white/50 dark:hover:bg-slate-800/50 transition-colors duration-200 ease-in-out rounded-lg" href="#">
+<span class="material-symbols-outlined text-[20px]" data-icon="psychology">psychology</span>
+<span class="text-sm">AI Analyst</span>
+</a>
+<a class="flex items-center space-x-3 px-3 py-2 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 hover:bg-white/50 dark:hover:bg-slate-800/50 transition-colors duration-200 ease-in-out rounded-lg" href="#">
+<span class="material-symbols-outlined text-[20px]" data-icon="newspaper">newspaper</span>
+<span class="text-sm">Market News</span>
+</a>
+<a class="flex items-center space-x-3 px-3 py-2 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 hover:bg-white/50 dark:hover:bg-slate-800/50 transition-colors duration-200 ease-in-out rounded-lg" href="#">
+<span class="material-symbols-outlined text-[20px]" data-icon="settings">settings</span>
+<span class="text-sm">Settings</span>
+</a>
+</nav>
+<div class="mt-auto">
+<button class="w-full bg-[#111827] text-white py-2.5 px-4 rounded-[10px] text-sm font-medium hover:opacity-90 transition-all">
+                Upgrade to Pro
+            </button>
+</div>
+</aside>
+<!-- Top Navigation Bar -->
+<header class="fixed top-0 right-0 w-[calc(100%-220px)] h-14 bg-white/80 dark:bg-slate-900/80 backdrop-blur-md z-40 flex items-center justify-between px-8 transition-all duration-300">
+<div class="flex items-center space-x-6">
+<div class="relative group">
+<span class="absolute inset-y-0 left-3 flex items-center text-slate-400">
+<span class="material-symbols-outlined text-[18px]" data-icon="search">search</span>
+</span>
+<input class="pl-10 pr-4 py-1.5 bg-[#F9F9F7] border-[0.5px] border-outline-variant rounded-lg text-sm focus:ring-1 focus:ring-primary-container focus:border-primary-container outline-none w-64 transition-all" placeholder="Search markets..." type="text"/>
+</div>
+<nav class="flex space-x-6">
+<a class="text-slate-600 dark:text-slate-400 hover:text-slate-900 text-sm font-medium" href="#">Markets</a>
+<a class="text-slate-600 dark:text-slate-400 hover:text-slate-900 text-sm font-medium" href="#">Indices</a>
+<a class="text-slate-600 dark:text-slate-400 hover:text-slate-900 text-sm font-medium" href="#">IPO</a>
+<a class="text-slate-600 dark:text-slate-400 hover:text-slate-900 text-sm font-medium" href="#">Education</a>
+</nav>
+</div>
+<div class="flex items-center space-x-5">
+<button class="text-slate-600 hover:text-slate-900">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+</button>
+<button class="text-slate-600 hover:text-slate-900">
+<span class="material-symbols-outlined" data-icon="help_outline">help_outline</span>
+</button>
+<img alt="User Profile" class="w-8 h-8 rounded-full border border-outline-variant/30" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCjRSy2_SXQcSLvFvr3BIUh94moz4a91aPitqKSbcblnKchT6cPOjQptaGmKrQ84T3N9jRdp9WrvNnP52D3WTCKd4v3NJTAZE3WIFq6yAcFJE_lueGcrAweiUKkNnjoOH6gjnhoK4Ae7QuYQQE-PpohPUxqt1SEGVLwimJqYrMpls_G-C5TaPcSkpWtE8iOtQCCTNdfCbEnCSb4mfJVAq9Yl15cPBe4ltV_MeUBX_D4EbBLkAqb7-ulLNc4nfFUZbN0KK7NB2maaxPc"/>
+</div>
+</header>
+<!-- Ticker Tape -->
+<div class="fixed top-14 left-[220px] right-0 h-10 bg-white ghost-border border-x-0 flex items-center overflow-hidden z-30">
+<div class="flex items-center space-x-8 animate-marquee whitespace-nowrap px-8 tabular-nums text-[13px] font-medium">
+<span class="flex items-center space-x-2"><span class="text-slate-500">APPLE</span> <span class="text-on-surface">189.43</span> <span class="text-tertiary-container">+1.24%</span></span>
+<span class="flex items-center space-x-2"><span class="text-slate-500">MICROSOFT</span> <span class="text-on-surface">412.55</span> <span class="text-tertiary-container">+0.82%</span></span>
+<span class="flex items-center space-x-2"><span class="text-slate-500">TESLA</span> <span class="text-on-surface">175.44</span> <span class="text-error">-2.15%</span></span>
+<span class="flex items-center space-x-2"><span class="text-slate-500">AMAZON</span> <span class="text-on-surface">178.22</span> <span class="text-tertiary-container">+0.45%</span></span>
+<span class="flex items-center space-x-2"><span class="text-slate-500">NVIDIA</span> <span class="text-on-surface">894.22</span> <span class="text-tertiary-container">+3.12%</span></span>
+<span class="flex items-center space-x-2"><span class="text-slate-500">GOOGLE</span> <span class="text-on-surface">152.44</span> <span class="text-error">-0.12%</span></span>
+<span class="flex items-center space-x-2"><span class="text-slate-500">META</span> <span class="text-on-surface">495.10</span> <span class="text-tertiary-container">+1.11%</span></span>
+</div>
+</div>
+<!-- Main Content Canvas -->
+<main class="ml-[220px] pt-24 p-8 min-h-screen">
+<!-- Page Title: Split Weight -->
+<div class="mb-8">
+<h1 class="text-[32px] tracking-tight">
+<span class="font-normal text-slate-500">Market</span>
+<span class="font-semibold text-on-surface">Intelligence</span>
+</h1>
+</div>
+<!-- Index Cards Row -->
+<div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-10">
+<!-- NIFTY 50 -->
+<div class="bg-white ghost-border rounded-[14px] p-5">
+<div class="flex justify-between items-start mb-3">
+<span class="text-[11px] font-semibold uppercase tracking-[0.08em] text-slate-500">NIFTY 50</span>
+<span class="material-symbols-outlined text-slate-300 text-[20px]" data-icon="trending_up">trending_up</span>
+</div>
+<div class="space-y-1">
+<div class="text-2xl font-semibold tabular-nums">22,478.40</div>
+<div class="flex items-center space-x-2 text-[13px] font-medium text-tertiary-container">
+<span>+124.50</span>
+<span>(0.56%)</span>
+</div>
+</div>
+</div>
+<!-- SENSEX -->
+<div class="bg-white ghost-border rounded-[14px] p-5">
+<div class="flex justify-between items-start mb-3">
+<span class="text-[11px] font-semibold uppercase tracking-[0.08em] text-slate-500">SENSEX</span>
+<span class="material-symbols-outlined text-slate-300 text-[20px]" data-icon="trending_up">trending_up</span>
+</div>
+<div class="space-y-1">
+<div class="text-2xl font-semibold tabular-nums">74,085.99</div>
+<div class="flex items-center space-x-2 text-[13px] font-medium text-tertiary-container">
+<span>+406.30</span>
+<span>(0.55%)</span>
+</div>
+</div>
+</div>
+<!-- BANK NIFTY -->
+<div class="bg-white ghost-border rounded-[14px] p-5">
+<div class="flex justify-between items-start mb-3">
+<span class="text-[11px] font-semibold uppercase tracking-[0.08em] text-slate-500">BANK NIFTY</span>
+<span class="material-symbols-outlined text-slate-300 text-[20px]" data-icon="trending_down">trending_down</span>
+</div>
+<div class="space-y-1">
+<div class="text-2xl font-semibold tabular-nums">47,835.80</div>
+<div class="flex items-center space-x-2 text-[13px] font-medium text-error">
+<span>-15.20</span>
+<span>(-0.03%)</span>
+</div>
+</div>
+</div>
+<!-- NIFTY IT -->
+<div class="bg-white ghost-border rounded-[14px] p-5">
+<div class="flex justify-between items-start mb-3">
+<span class="text-[11px] font-semibold uppercase tracking-[0.08em] text-slate-500">NIFTY IT</span>
+<span class="material-symbols-outlined text-slate-300 text-[20px]" data-icon="trending_up">trending_up</span>
+</div>
+<div class="space-y-1">
+<div class="text-2xl font-semibold tabular-nums">37,214.15</div>
+<div class="flex items-center space-x-2 text-[13px] font-medium text-tertiary-container">
+<span>+312.40</span>
+<span>(0.85%)</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Main Dashboard Grid -->
+<div class="grid grid-cols-10 gap-8">
+<!-- Left Column (62%) -->
+<div class="col-span-10 lg:col-span-6 space-y-8">
+<!-- Sector Heatmap -->
+<section class="bg-white ghost-border rounded-[14px] p-6">
+<div class="flex items-center justify-between mb-6">
+<h2 class="text-lg font-semibold text-slate-900">Sector Heatmap</h2>
+<button class="text-[11px] font-semibold uppercase tracking-[0.08em] text-primary hover:underline">View All</button>
+</div>
+<div class="grid grid-cols-3 md:grid-cols-4 gap-4 h-[320px]">
+<div class="bg-[#F0FDF4] rounded-lg p-4 flex flex-col justify-between group hover:brightness-95 transition-all">
+<span class="text-[11px] font-semibold text-tertiary uppercase">Fintech</span>
+<span class="text-xl font-bold tabular-nums text-tertiary-container">+2.8%</span>
+</div>
+<div class="bg-[#F0FDF4] rounded-lg p-4 flex flex-col justify-between hover:brightness-95 transition-all">
+<span class="text-[11px] font-semibold text-tertiary uppercase">Automobile</span>
+<span class="text-xl font-bold tabular-nums text-tertiary-container">+1.4%</span>
+</div>
+<div class="bg-[#FEF2F2] rounded-lg p-4 flex flex-col justify-between hover:brightness-95 transition-all">
+<span class="text-[11px] font-semibold text-on-error-container uppercase">FMCG</span>
+<span class="text-xl font-bold tabular-nums text-on-error-container">-0.8%</span>
+</div>
+<div class="bg-[#F0FDF4] rounded-lg p-4 flex flex-col justify-between hover:brightness-95 transition-all">
+<span class="text-[11px] font-semibold text-tertiary uppercase">Energy</span>
+<span class="text-xl font-bold tabular-nums text-tertiary-container">+0.9%</span>
+</div>
+<div class="bg-[#F4F4F2] rounded-lg p-4 flex flex-col justify-between col-span-2 hover:brightness-95 transition-all">
+<span class="text-[11px] font-semibold text-slate-500 uppercase">Pharma</span>
+<span class="text-xl font-bold tabular-nums text-slate-800">+0.2%</span>
+</div>
+<div class="bg-[#F0FDF4] rounded-lg p-4 flex flex-col justify-between hover:brightness-95 transition-all">
+<span class="text-[11px] font-semibold text-tertiary uppercase">Metals</span>
+<span class="text-xl font-bold tabular-nums text-tertiary-container">+3.1%</span>
+</div>
+<div class="bg-[#FEF2F2] rounded-lg p-4 flex flex-col justify-between hover:brightness-95 transition-all">
+<span class="text-[11px] font-semibold text-on-error-container uppercase">Realty</span>
+<span class="text-xl font-bold tabular-nums text-on-error-container">-1.2%</span>
+</div>
+</div>
+</section>
+<!-- AI Pulse Reports -->
+<section class="bg-white ghost-border rounded-[14px] p-6">
+<div class="flex items-center justify-between mb-6">
+<div class="flex items-center space-x-2">
+<span class="material-symbols-outlined text-primary" data-icon="psychology">psychology</span>
+<h2 class="text-lg font-semibold text-slate-900">AI Pulse Reports</h2>
+</div>
+<span class="text-[11px] font-semibold uppercase tracking-[0.08em] text-slate-400">Updates every 15m</span>
+</div>
+<div class="space-y-4">
+<div class="p-4 bg-surface-container-low rounded-xl flex items-start space-x-4 border-l-4 border-primary">
+<div class="space-y-1">
+<h3 class="font-semibold text-on-surface">Inflation Data Impact Analysis</h3>
+<p class="text-sm text-slate-600 leading-relaxed">Recent CPI data suggests a cooling trend in core services. AI predicts a 15% probability shift toward an early rate cut in Q3.</p>
+<div class="flex items-center space-x-3 pt-2">
+<span class="text-[10px] font-bold text-primary uppercase">High Confidence</span>
+<span class="text-[10px] text-slate-400">2 min ago</span>
+</div>
+</div>
+</div>
+<div class="p-4 bg-surface-container-low rounded-xl flex items-start space-x-4 border-l-4 border-tertiary">
+<div class="space-y-1">
+<h3 class="font-semibold text-on-surface">Tech Sector Accumulation Detected</h3>
+<p class="text-sm text-slate-600 leading-relaxed">Aggregated dark pool data shows significant institutional buying in semi-conductor indices over the last 48 hours.</p>
+<div class="flex items-center space-x-3 pt-2">
+<span class="text-[10px] font-bold text-tertiary uppercase">Trend Alert</span>
+<span class="text-[10px] text-slate-400">12 min ago</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+</div>
+<!-- Right Column (38%) -->
+<div class="col-span-10 lg:col-span-4 space-y-8">
+<!-- Top Gainers -->
+<section class="bg-white ghost-border rounded-[14px] p-6">
+<h2 class="text-lg font-semibold text-slate-900 mb-6 flex items-center">
+<span class="material-symbols-outlined text-tertiary mr-2" data-icon="rocket_launch">rocket_launch</span>
+                        Top Gainers
+                    </h2>
+<div class="space-y-1">
+<div class="flex items-center justify-between py-3 hover:bg-surface-container-low px-2 rounded-lg transition-colors">
+<div class="flex flex-col">
+<span class="font-semibold text-sm">HDFC Bank</span>
+<span class="text-[11px] text-slate-400">Financial</span>
+</div>
+<div class="text-right">
+<div class="text-sm font-semibold tabular-nums">1,452.30</div>
+<div class="text-[12px] text-tertiary-container font-medium">+4.12%</div>
+</div>
+</div>
+<div class="flex items-center justify-between py-3 hover:bg-surface-container-low px-2 rounded-lg transition-colors">
+<div class="flex flex-col">
+<span class="font-semibold text-sm">Reliance Ind.</span>
+<span class="text-[11px] text-slate-400">Energy</span>
+</div>
+<div class="text-right">
+<div class="text-sm font-semibold tabular-nums">2,988.45</div>
+<div class="text-[12px] text-tertiary-container font-medium">+3.85%</div>
+</div>
+</div>
+<div class="flex items-center justify-between py-3 hover:bg-surface-container-low px-2 rounded-lg transition-colors">
+<div class="flex flex-col">
+<span class="font-semibold text-sm">Tata Motors</span>
+<span class="text-[11px] text-slate-400">Automotive</span>
+</div>
+<div class="text-right">
+<div class="text-sm font-semibold tabular-nums">985.10</div>
+<div class="text-[12px] text-tertiary-container font-medium">+2.90%</div>
+</div>
+</div>
+<div class="flex items-center justify-between py-3 hover:bg-surface-container-low px-2 rounded-lg transition-colors">
+<div class="flex flex-col">
+<span class="font-semibold text-sm">Infosys Ltd</span>
+<span class="text-[11px] text-slate-400">IT Services</span>
+</div>
+<div class="text-right">
+<div class="text-sm font-semibold tabular-nums">1,622.00</div>
+<div class="text-[12px] text-tertiary-container font-medium">+1.74%</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Top Losers -->
+<section class="bg-white ghost-border rounded-[14px] p-6">
+<h2 class="text-lg font-semibold text-slate-900 mb-6 flex items-center">
+<span class="material-symbols-outlined text-error mr-2" data-icon="trending_down">trending_down</span>
+                        Top Losers
+                    </h2>
+<div class="space-y-1">
+<div class="flex items-center justify-between py-3 hover:bg-surface-container-low px-2 rounded-lg transition-colors">
+<div class="flex flex-col">
+<span class="font-semibold text-sm">Wipro</span>
+<span class="text-[11px] text-slate-400">IT Services</span>
+</div>
+<div class="text-right">
+<div class="text-sm font-semibold tabular-nums">482.15</div>
+<div class="text-[12px] text-error font-medium">-3.20%</div>
+</div>
+</div>
+<div class="flex items-center justify-between py-3 hover:bg-surface-container-low px-2 rounded-lg transition-colors">
+<div class="flex flex-col">
+<span class="font-semibold text-sm">Coal India</span>
+<span class="text-[11px] text-slate-400">Energy</span>
+</div>
+<div class="text-right">
+<div class="text-sm font-semibold tabular-nums">448.90</div>
+<div class="text-[12px] text-error font-medium">-2.84%</div>
+</div>
+</div>
+<div class="flex items-center justify-between py-3 hover:bg-surface-container-low px-2 rounded-lg transition-colors">
+<div class="flex flex-col">
+<span class="font-semibold text-sm">Sun Pharma</span>
+<span class="text-[11px] text-slate-400">Pharmaceuticals</span>
+</div>
+<div class="text-right">
+<div class="text-sm font-semibold tabular-nums">1,544.20</div>
+<div class="text-[12px] text-error font-medium">-1.15%</div>
+</div>
+</div>
+<div class="flex items-center justify-between py-3 hover:bg-surface-container-low px-2 rounded-lg transition-colors">
+<div class="flex flex-col">
+<span class="font-semibold text-sm">Britannia</span>
+<span class="text-[11px] text-slate-400">FMCG</span>
+</div>
+<div class="text-right">
+<div class="text-sm font-semibold tabular-nums">4,912.00</div>
+<div class="text-[12px] text-error font-medium">-0.98%</div>
+</div>
+</div>
+</div>
+</section>
+</div>
+</div>
+</main>
+<style>
+        @keyframes marquee {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+        .animate-marquee {
+            display: inline-flex;
+            animation: marquee 30s linear infinite;
+        }
+        .animate-marquee:hover {
+            animation-play-state: paused;
+        }
+    </style>
+</body></html>
