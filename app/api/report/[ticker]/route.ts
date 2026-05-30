@@ -10,20 +10,21 @@ export async function POST(
     const { ticker } = await params
     const body = await request.json()
     
-    const backendUrl = process.env.PYTHON_BACKEND_URL || '${BACKEND}'
+    const backendUrl = process.env.PYTHON_BACKEND_URL || BACKEND;
     const response = await fetch(
       `${backendUrl}/api/report/${ticker}`,
       {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(body),
+        signal: AbortSignal.timeout(55000)
       }
     )
     
     if (!response.ok) {
       const errText = await response.text().catch(() => '');
       console.error(`Backend error: ${response.status} ${response.statusText}`, errText);
-      return NextResponse.json({ error: 'Failed to generate report', detail: errText }, { status: response.status });
+      return NextResponse.json({ error: `Backend error: ${response.status}`, details: errText }, { status: response.status });
     }
     
     const blob = await response.blob()

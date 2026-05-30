@@ -8,8 +8,24 @@ def to_ns(ticker: str) -> str:
     return ticker
 
 def get_overview(ticker: str) -> dict:
-    t = yf.Ticker(to_ns(ticker))
+    yf_ticker = to_ns(ticker)
+    t = yf.Ticker(yf_ticker)
     info = t.info
+    
+    # Check if this is an Indian stock (NSE/BSE)
+    exchange = info.get("exchange", "")
+    if exchange not in ["NSI", "BSE", "BOM"]:
+        # Fallback check for ticker suffix
+        if not (yf_ticker.endswith(".NS") or yf_ticker.endswith(".BO")):
+            raise ValueError(f"Exchange {exchange} not supported. QuantEdge covers NSE/BSE stocks.")
+
+    # Price fallback chain
+    last_price = None
+    try:
+        last_price = t.fast_info.last_price
+    except:
+        last_price = info.get("currentPrice") or info.get("regularMarketPrice")
+
     return {
         "name": info.get("longName"),
         "sector": info.get("sector"),
@@ -32,6 +48,8 @@ def get_overview(ticker: str) -> dict:
         "description": info.get("longBusinessSummary"),
         "employees": info.get("fullTimeEmployees"),
         "website": info.get("website"),
+        "last_price": last_price,
+        "exchange": exchange,
     }
 
 def get_financials(ticker: str) -> dict:
@@ -62,33 +80,50 @@ def get_peers(ticker: str) -> list:
     t = yf.Ticker(to_ns(ticker))
     info = t.info
     sector = info.get("sector", "")
-    # Nifty 50 universe for peer matching
-    NIFTY50 = [
-        "RELIANCE","TCS","HDFCBANK","INFY","ICICIBANK","HINDUNILVR","ITC",
-        "SBIN","BHARTIARTL","KOTAKBANK","LT","AXISBANK","ASIANPAINT","MARUTI",
-        "SUNPHARMA","TITAN","BAJFINANCE","WIPRO","ULTRACEMCO","NESTLEIND"
-    ]
+    
+    import json
+    import os
+    
     peers = []
-    for sym in NIFTY50:
-        if sym == ticker.upper():
-            continue
-        try:
-            p = yf.Ticker(sym + ".NS")
-            pi = p.info
-            if pi.get("sector") == sector:
+    try:
+        # Load Nifty 500 from json
+        json_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'nifty500.json')
+        with open(json_path, 'r', encoding='utf-8') as f:
+            nifty500 = json.load(f)
+            
+        nifty_sector = None
+        for p in nifty500:
+            if p.get("ticker", "") == ticker.upper() or p.get("yf_ticker", "") == ticker.upper() + ".NS":
+                nifty_sector = p.get("sector")
+                break
+                
+        nifty_sector = nifty_sector or sector
+        
+        # Find stocks in the same sector
+        sector_peers = [p for p in nifty500 if p.get("sector") == nifty_sector and p.get("ticker", "") != ticker.upper()]
+        
+        # Take first 5 matches to avoid too many requests
+        for p_data in sector_peers[:5]:
+            sym = p_data.get("ticker")
+            try:
+                p = yf.Ticker(sym + ".NS")
+                pi = p.info
                 peers.append({
                     "symbol": sym,
-                    "name": pi.get("longName"),
+                    "name": pi.get("longName") or p_data.get("company_name"),
                     "pe_ratio": pi.get("trailingPE"),
                     "pb_ratio": pi.get("priceToBook"),
                     "roe": pi.get("returnOnEquity"),
                     "market_cap": pi.get("marketCap"),
                     "net_margin": pi.get("profitMargins"),
-                    "current_price": pi.get("currentPrice") or pi.get("previousClose") or None,
+                    "current_price": pi.get("currentPrice") or pi.get("regularMarketPrice") or pi.get("previousClose") or None,
                     "roce": (pi.get("returnOnCapitalEmployed") * 100) if pi.get("returnOnCapitalEmployed") else None,
                 })
-        except:
-            continue
+            except Exception as e:
+                continue
+    except Exception as e:
+        print(f"Error loading peers: {e}")
+        
     return peers
 
 def get_shareholding(ticker: str) -> dict:

@@ -51,63 +51,121 @@ function buildSystemPrompt(ticker: string, stockData: any): string {
   // For financials: Python payload is { date: { metric: value } }
   const years = Object.keys(fin).sort().reverse();
   const latestYear = years[0] || 'N/A';
-  console.log('Financials years:', years);
-
   const latestFin = fin[latestYear] || {};
   const latestBs = bs[latestYear] || {};
 
+  const companyName = o.name || 'N/A';
+  const price = o.last_price || o.currentPrice || 'N/A';
+  const marketCap = (o.market_cap || o.marketCap) ? Math.floor((o.market_cap || o.marketCap) / 10000000) : 'N/A';
+  const sector = o.sector || 'N/A';
+  const pe = (o.pe_ratio || o.trailingPE) ? Number(o.pe_ratio || o.trailingPE).toFixed(1) : 'N/A';
+  const roe = (o.roe || o.returnOnEquity) ? (Number(o.roe || o.returnOnEquity) * (o.roe > 1 ? 1 : 100)).toFixed(1) : 'N/A';
+  const de = (o.debt_to_equity || o.debtToEquity) ? Number(o.debt_to_equity || o.debtToEquity).toFixed(2) : 'N/A';
+  const revGrowth = (o.revenue_growth || o.revenue_growth === 0 || o.revenueGrowth) ? (Number(o.revenue_growth ?? o.revenueGrowth) * (Math.abs(Number(o.revenue_growth ?? o.revenueGrowth)) > 1 ? 1 : 100)).toFixed(1) : 'N/A';
+  const netMargin = (o.net_margin || o.profitMargins) ? (Number(o.net_margin || o.profitMargins) * (Math.abs(Number(o.net_margin || o.profitMargins)) > 1 ? 1 : 100)).toFixed(1) : 'N/A';
+
+  const revenue = latestFin['Total Revenue'] ? Math.floor(latestFin['Total Revenue'] / 10000000) : 'N/A';
+  const netIncome = latestFin['Net Income'] ? Math.floor(latestFin['Net Income'] / 10000000) : 'N/A';
+  const totalDebt = latestBs['Total Debt'] ? Math.floor(latestBs['Total Debt'] / 10000000) : 'N/A';
+  const totalAssets = latestBs['Total Assets'] ? Math.floor(latestBs['Total Assets'] / 10000000) : 'N/A';
+
   const peersFormatted = peers.slice(0, 4).map((p: any) =>
-    `${p.symbol || 'N/A'} — PE: ${p.pe_ratio || 'N/A'}, ROE: ${p.roe ? `${(p.roe * 100).toFixed(1)}%` : 'N/A'}, NetMargin: ${p.net_margin ? `${p.net_margin.toFixed(1)}%` : 'N/A'}`
+    `${p.symbol || p.ticker || 'N/A'} — PE: ${p.pe_ratio || 'N/A'}, ROE: ${p.roe ? `${(p.roe * (p.roe > 1 ? 1 : 100)).toFixed(1)}%` : 'N/A'}, NetMargin: ${p.net_margin ? `${(p.net_margin * (p.net_margin > 1 ? 1 : 100)).toFixed(1)}%` : 'N/A'}`
   ).join('\n');
 
   // Parse shareholding
   const majorHolders = sh?.major_holders || [];
-  let promoterPct = 'N/A', fiiPct = 'N/A', publicPct = 'N/A';
+  let promoterPct = 'N/A', fiiPct = 'N/A';
   for (const row of majorHolders) {
     const label = (row.index || row.Breakdown || row[1] || '').toLowerCase();
     const valObj = row.Value ?? row[0];
-    const val = valObj ? (parseFloat(valObj) * 100).toFixed(1) : 'N/A';
-    if (label.includes('insider')) promoterPct = val;
+    const val = valObj ? (parseFloat(valObj) * (parseFloat(valObj) > 1 ? 1 : 100)).toFixed(1) : 'N/A';
+    if (label.includes('insider') || label.includes('promoter')) promoterPct = val;
     else if (label.includes('institution') && !label.includes('float')) fiiPct = val;
   }
 
-  return `You are a financial analyst assistant for QuantEdge, an AI stock analysis
-platform for Indian retail investors. You are answering questions about
-${ticker} (${o.name || 'N/A'}).
+  return `You are a sharp, knowledgeable financial analyst at QuantEdge helping
+Indian retail investors understand ${ticker} (${companyName}).
 
-IMPORTANT RULES:
-- Only use the data provided below for any numerical claims
-- Never use your training knowledge for prices, ratios, or financials
-- If data is missing or null, say "data unavailable" — never guess
-- Keep answers concise: 2-4 sentences max unless a detailed breakdown is asked
-- Always mention the specific number from the data when answering
-- Do not give buy/sell advice — give analysis only
-- If asked something outside finance/this stock, politely redirect
+YOUR PERSONALITY:
+- Think like a seasoned analyst at a top brokerage — direct, confident, helpful
+- You give real analysis, not generic disclaimers
+- You explain what numbers actually mean for the investor
+- You compare to peers and sector benchmarks proactively
+- You highlight both opportunities AND risks honestly
+- You speak in plain English, not financial jargon
+- Keep responses focused: 3-5 sentences, specific, actionable insights
+
+YOUR RULES:
+- Always ground every claim in the data provided below
+- Never invent numbers — if data is missing say "yfinance doesn't have 
+  this data for ${ticker}"
+- For questions about historical prices or events you don't have data for,
+  explain what you DO know and what it implies
+- You can say a stock "looks attractive" or "appears overvalued" based on
+  data — you just can't say "buy" or "sell" as a direct instruction
+- If someone asks "is this worth it" — give them the actual analysis:
+  valuation, growth, risks, peer comparison. Let THEM decide.
+- For questions outside your data scope, tell them what you know and
+  suggest they check the Financials or AI Analyst tab for more depth
+
+RESPONSE STYLE EXAMPLES:
+
+User: "is this stock worth it"
+Bad response: "I can't give investment advice."
+Good response: "TCS trades at a P/E of 18.6 which is reasonable for 
+an IT major — INFY is at 22x and WIPRO at 19x, so TCS is actually the 
+cheapest of the three. ROE of 42.6% is exceptional, meaning the company 
+generates strong returns on shareholder money. The main concern is revenue 
+growth — at 6% YoY it's slowing compared to historical levels. Overall 
+the fundamentals are solid but growth needs to reaccelerate to justify 
+further upside."
+
+User: "top 5 highest prices"
+Bad response: "Data unavailable."
+Good response: "I don't have historical price data in my context — for 
+price history check the Overview tab chart. What I can tell you is TCS 
+currently trades at ₹2451 with a market cap of ₹8.71L Cr, making it 
+India's second largest company. At this price the P/E of 18.6 is at the 
+lower end of its historical range, which some analysts consider a buying 
+opportunity."
+
+User: "compare with peers"
+Good response: "Versus its IT peers, TCS leads on profitability — 
+Net Margin 18.3% vs INFY's 16.2% and WIPRO's 14.6%. However INFY 
+has slightly better revenue growth momentum. On valuation TCS at 18.6x 
+P/E is the cheapest of the large-cap IT trio. The key differentiator 
+is TCS's $29B order book and diversified client base which provides 
+earnings stability."
+
+---
 
 CURRENT STOCK DATA:
-Price: ₹${o.last_price || o.currentPrice || 'N/A'} (15-min delayed)
-Market Cap: ₹${(o.market_cap || o.marketCap) ? Math.floor((o.market_cap || o.marketCap) / 10000000) : 'N/A'} Cr
-Sector: ${o.sector || 'N/A'}
+Ticker: ${ticker}
+Company: ${companyName}
+Current Price: ₹${price}
+Market Cap: ₹${marketCap} Cr
+Sector: ${sector}
 
-FUNDAMENTALS:
-P/E Ratio: ${(o.pe_ratio || o.trailingPE) ? Number(o.pe_ratio || o.trailingPE).toFixed(1) : 'N/A'}
-Return on Equity: ${(o.roe || o.returnOnEquity) ? (Number(o.roe || o.returnOnEquity) * (o.roe > 1 ? 1 : 100)).toFixed(1) : 'N/A'}%
-Debt/Equity: ${(o.debt_to_equity || o.debtToEquity) ? Number(o.debt_to_equity || o.debtToEquity).toFixed(2) : 'N/A'}
-Revenue Growth (YoY): ${(o.revenue_growth || o.revenueGrowth) ? (Number(o.revenue_growth || o.revenueGrowth) * (o.revenue_growth > 1 ? 1 : 100)).toFixed(1) : 'N/A'}%
-Net Profit Margin: ${(o.net_margin || o.profitMargins) ? (Number(o.net_margin || o.profitMargins) * (o.net_margin > 1 ? 1 : 100)).toFixed(1) : 'N/A'}%
+KEY METRICS:
+P/E Ratio: ${pe}
+Return on Equity: ${roe}%
+Debt/Equity: ${de}
+Revenue Growth (YoY): ${revGrowth}%
+Net Profit Margin: ${netMargin}%
 
 LATEST FINANCIALS (${latestYear}):
-Revenue: ₹${latestFin['Total Revenue'] ? Math.floor(latestFin['Total Revenue'] / 10000000) : 'N/A'} Cr
-Net Income: ₹${latestFin['Net Income'] ? Math.floor(latestFin['Net Income'] / 10000000) : 'N/A'} Cr
-Total Debt: ₹${latestBs['Total Debt'] ? Math.floor(latestBs['Total Debt'] / 10000000) : 'N/A'} Cr
-Total Assets: ₹${latestBs['Total Assets'] ? Math.floor(latestBs['Total Assets'] / 10000000) : 'N/A'} Cr
+Revenue: ₹${revenue} Cr
+Net Income: ₹${netIncome} Cr
+Total Debt: ₹${totalDebt} Cr
+Total Assets: ₹${totalAssets} Cr
 
-PEER COMPARISON:
+PEER COMPARISON (same sector):
 ${peersFormatted}
-(Format each peer as: TICKER — PE: X, ROE: X%, NetMargin: X%)
 
 SHAREHOLDING:
-Promoters: ${promoterPct}%
-FII/FPI: ${fiiPct}%
-Public: ${publicPct}%`;
+Promoter/Insider: ${promoterPct}%
+Institutional: ${fiiPct}%
+
+---`;
 }

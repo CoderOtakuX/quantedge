@@ -106,14 +106,14 @@ def generate_report(ticker: str, ai_data: AIAnalysisRequest):
     # Helper formatters
     def fmt_cr(val):
         try:
-            if not val: return "N/A"
+            if val is None: return "N/A"
             v = float(val)
-            if v > 1_000_000_000:
-                return f"₹{v/1e7:,.0f} Cr"
-            elif v < 100_000:
-                return f"₹{v:,.0f} Cr"
+            # Standardize: Assume input is in units, convert to Crore (divide by 1Cr = 10^7)
+            cr_val = v / 10_000_000
+            if abs(cr_val) >= 100:
+                return f"₹{cr_val:,.0f} Cr"
             else:
-                return f"₹{v:,.0f} Cr"
+                return f"₹{cr_val:,.2f} Cr"
         except:
             return "N/A"
 
@@ -143,7 +143,7 @@ def generate_report(ticker: str, ai_data: AIAnalysisRequest):
     add_text(s1, sector_str, 0.5, 3.2, 5.5, 0.5, 11, False, "MID_GRAY")
 
     # Bottom left stats
-    curr_prc = safe_float(overview.get("current_price"))
+    curr_prc = safe_float(overview.get("last_price"))
     if not curr_prc and overview.get("eps") and overview.get("pe_ratio"):
         curr_prc = safe_float(overview.get("eps")) * safe_float(overview.get("pe_ratio"))
 
@@ -205,11 +205,13 @@ def generate_report(ticker: str, ai_data: AIAnalysisRequest):
     inc_stmt_temp = financials.get("income_statement", {})
     bs_temp = financials.get("balance_sheet", {})
     
-    if not pe_val:
-        c_eps = overview.get("trailingEps") or overview.get("epsTrailingTwelveMonths")
-        c_price = overview.get("currentPrice") or overview.get("regularMarketPrice") or overview.get("current_price")
+    if not pe_val or pe_val == 0:
+        c_eps = overview.get("trailingEps") or overview.get("eps") or overview.get("epsTrailingTwelveMonths")
+        c_price = overview.get("last_price") or overview.get("currentPrice") or overview.get("regularMarketPrice")
         if c_eps and c_price and safe_float(c_eps) != 0:
             pe_val = round(safe_float(c_price) / safe_float(c_eps), 1)
+        else:
+            pe_val = 0
 
     if not is_bank and not de_val and bs_temp:
         dates_bs = sorted(list(bs_temp.keys()))
@@ -304,9 +306,9 @@ def generate_report(ticker: str, ai_data: AIAnalysisRequest):
             chart.series[1].format.fill.fore_color.rgb = COLORS["NAVY"]
 
         add_text(s4, "Latest Revenue", 6.3, 1.5, 3.0, 0.3, 11, False, "MID_GRAY")
-        add_text(s4, f"₹{int(revs[-1]):,} Cr", 6.3, 1.8, 3.0, 0.6, 28, True, "NAVY")
+        add_text(s4, f"₹{rev_cr[-1]:,.0f} Cr", 6.3, 1.8, 3.0, 0.6, 28, True, "NAVY")
         add_text(s4, "Latest Net Profit", 6.3, 2.7, 3.0, 0.3, 11, False, "MID_GRAY")
-        add_text(s4, f"₹{int(profits[-1]):,} Cr", 6.3, 3.0, 3.0, 0.6, 28, True, "NAVY")
+        add_text(s4, f"₹{profit_cr[-1]:,.0f} Cr", 6.3, 3.0, 3.0, 0.6, 28, True, "NAVY")
         
         if len(revs) > 1 and revs[-2] > 0:
             yoy = ((revs[-1] - revs[-2]) / revs[-2]) * 100
@@ -454,10 +456,13 @@ def generate_report(ticker: str, ai_data: AIAnalysisRequest):
                 if "insider" in label:
                     promoter_pct = val
                 elif "institution" in label and "float" not in label and "count" not in label:
-                    fii_pct = val
+                    # 'institutionsPercentHeld' is total institutions (FII + DII)
+                    # We estimate a 60/40 split for Indian markets if no exact breakdown
+                    total_inst = val
+                    fii_pct = round(total_inst * 0.6, 1)
+                    dii_pct = round(total_inst * 0.4, 1)
 
-            dii_pct = max(0, round(fii_pct * 0.4, 1))
-            public_pct = max(0, round(100 - promoter_pct - fii_pct, 1))
+            public_pct = max(0, round(100 - promoter_pct - (fii_pct + dii_pct), 1))
             
             sh_data["Promoters"] = min(promoter_pct, 100)
             sh_data["FII/FPI"] = min(fii_pct, 100)

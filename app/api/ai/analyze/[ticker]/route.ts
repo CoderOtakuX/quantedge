@@ -31,12 +31,27 @@ async function groqCall(prompt: string, systemPrompt: string): Promise<string> {
   return data.choices[0].message.content;
 }
 
-function extractJSON(text: string): any {
+function parseGroqJSON(text: string): any {
+  if (!text) return null;
+  // Remove markdown code blocks if present
+  const cleaned = text
+    .replace(/```json\n?/g, "")
+    .replace(/```\n?/g, "")
+    .trim();
   try {
-    const match = text.match(/\{[\s\S]*\}/);
+    // Attempt to extract the FIRST JSON object found in the text
+    const match = cleaned.match(/\{[\s\S]*?\}/);
     if (match) return JSON.parse(match[0]);
-  } catch {}
-  return null;
+    return JSON.parse(cleaned);
+  } catch (e) {
+    console.error("JSON parse failed for:", cleaned);
+    // If it's a multi-line object that failed non-greedy, try greedy as last resort
+    try {
+      const greedyMatch = cleaned.match(/\{[\s\S]*\}/);
+      if (greedyMatch) return JSON.parse(greedyMatch[0]);
+    } catch {}
+    throw new Error("Failed to parse AI response as JSON");
+  }
 }
 
 async function safeFetch(url: string, timeoutMs = 30000): Promise<any> {
@@ -61,6 +76,10 @@ export async function GET(
   { params }: { params: Promise<{ ticker: string }> }
 ) {
   const { ticker } = await params;
+  
+  if (!GROQ_API_KEY) {
+    return NextResponse.json({ error: "GROQ_API_KEY is not configured in environment variables" }, { status: 500 });
+  }
   
   try {
     // Fetch overview and news first (essential), then financials and peers (best-effort)
@@ -142,7 +161,8 @@ Return this exact JSON structure:
 }`,
       STRICT_SYSTEM
     );
-    const step1 = extractJSON(step1Raw);
+    console.log('Step 1 response:', step1Raw);
+    const step1 = parseGroqJSON(step1Raw);
 
     // STEP 2 — News Sentiment
     const step2Raw = await groqCall(
@@ -159,7 +179,8 @@ Return this exact JSON structure:
 }`,
       STRICT_SYSTEM
     );
-    const step2 = extractJSON(step2Raw);
+    console.log('Step 2 response:', step2Raw);
+    const step2 = parseGroqJSON(step2Raw);
 
     // STEP 3 — Peer Benchmarking
     const step3Raw = await groqCall(
@@ -179,31 +200,54 @@ Return this exact JSON structure:
 }`,
       STRICT_SYSTEM
     );
-    const step3 = extractJSON(step3Raw);
+    console.log('Step 3 response:', step3Raw);
+    const step3 = parseGroqJSON(step3Raw);
 
     // STEP 4 — Final Synthesis
     const step4Raw = await groqCall(
-      `You are synthesizing a final investment verdict for ${ticker}.
+      `You are synthesizing a final investment verdict for ${ticker}. 
+      
+      You MUST use the following WEIGHTED SCORING RUBRIC (0-100 scale):
+      1. Valuation (P/E vs Sector Average): 25% 
+         - Score 100 if P/E is 50% below sector, 0 if 100% above.
+      2. Profitability (ROE): 20%
+         - Score 100 if ROE > 25%, 0 if ROE < 5%.
+      3. Financial Health (Debt/Equity): 20%
+         - Score 100 if D/E < 0.5, 0 if D/E > 2.0.
+      4. Cash Flow (FCF Trend): 15%
+         - Score 100 if FCF is positive and growing, 0 if negative.
+      5. News Sentiment: 20%
+         - Score 100 if Bullish, 0 if Bearish.
 
-Financial analysis: ${JSON.stringify(step1)}
-News sentiment: ${JSON.stringify(step2)}
-Peer benchmarking: ${JSON.stringify(step3)}
-Company overview: name=${overview.name}, sector=${overview.sector}, price=${overview.last_price}, market_cap=${overview.market_cap}
+      VERDICT THRESHOLDS:
+      - Score 75-100: Strong Buy
+      - Score 60-74: Buy
+      - Score 40-59: Hold
+      - Score 20-39: Sell
+      - Score 0-19: Strong Sell
 
-Return this exact JSON structure:
-{
-  "verdict": "Strong Buy" | "Buy" | "Hold" | "Sell" | "Strong Sell",
-  "confidence": number between 0-100,
-  "summary": "string (2-3 sentences, no numbers not in the data provided)",
-  "bull_case": ["string", "string", "string"],
-  "bear_case": ["string", "string", "string"],
-  "outlook_1_2yr": "string (1-2 sentences)",
-  "key_risks": ["string", "string"],
-  "alternatives": ["TICKER1", "TICKER2"]
-}`,
+      Data for Synthesis:
+      Financial analysis: ${JSON.stringify(step1)}
+      News sentiment: ${JSON.stringify(step2)}
+      Peer benchmarking: ${JSON.stringify(step3)}
+      Company overview: name=${overview.name}, sector=${overview.sector}, current_price=${overview.last_price}, market_cap=${overview.market_cap}
+
+      Return this exact JSON structure:
+      {
+        "weighted_score": number (0-100),
+        "verdict": "Strong Buy" | "Buy" | "Hold" | "Sell" | "Strong Sell",
+        "confidence": number between 0-100,
+        "summary": "string (2-3 sentences explaining the core logic based on the scoring)",
+        "bull_case": ["string", "string", "string"],
+        "bear_case": ["string", "string", "string"],
+        "outlook_1_2yr": "string (1-2 sentences)",
+        "key_risks": ["string", "string"],
+        "alternatives": ["TICKER1", "TICKER2"]
+      }`,
       STRICT_SYSTEM
     );
-    const step4 = extractJSON(step4Raw);
+    console.log('Step 4 response:', step4Raw);
+    const step4 = parseGroqJSON(step4Raw);
 
     // Return full analysis
     return NextResponse.json({

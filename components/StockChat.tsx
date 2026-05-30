@@ -13,10 +13,10 @@ interface StockChatProps {
 }
 
 const SUGGESTIONS = [
-  "What is the revenue trend?",
-  "How does it compare to peers?",
-  "Is the debt level concerning?",
-  "What are the key risks?",
+  "How does valuation compare to peers?",
+  "What do the financials say about growth?",
+  "What are the key risks here?",
+  "Break down the shareholding pattern"
 ];
 
 export default function StockChat({ ticker, stockData }: StockChatProps) {

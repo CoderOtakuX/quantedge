@@ -213,7 +213,7 @@ export default function ReportGenerator() {
 
             {error && (
               <div className="mt-6 border border-red-200 bg-red-50 p-4 rounded-xl">
-                <p className="text-red-600 text-sm font-bold mb-2">Generation failed. Please retry.</p>
+                <p className="text-red-600 text-sm font-bold mb-2">{error}</p>
                 <button 
                   onClick={handleGenerate}
                   className="w-full h-10 bg-red-600 text-white rounded-lg text-sm font-bold hover:bg-red-700 transition"

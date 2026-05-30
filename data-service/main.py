@@ -41,11 +41,23 @@ def stock_overview(ticker: str):
     cached = cache.get(key)
     if cached: return cached
     try:
+        fundamentals = get_overview(ticker)
+    except ValueError as e:
+        raise HTTPException(status_code=404, detail=str(e))
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error fetching fundamental data: {str(e)}")
+
+    try:
         price_data = get_live_price(ticker.upper())
     except:
         price_data = {}
-    fundamentals = get_overview(ticker)
-    result = {**fundamentals, **price_data}
+
+    import datetime
+    result = {
+        **fundamentals, 
+        **price_data, 
+        "last_updated": datetime.datetime.now().isoformat()
+    }
     cache.set(key, result, ttl_seconds=900)
     return result
 

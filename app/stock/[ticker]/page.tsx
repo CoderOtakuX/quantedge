@@ -32,6 +32,7 @@ const StockDetail: React.FC = () => {
   const [historyData, setHistoryData] = useState<any[]>([]);
   const [chartPeriod, setChartPeriod] = useState("1y");
   const [chartLoading, setChartLoading] = useState(false);
+  const [aiError, setAiError] = useState<string | null>(null);
 
   useEffect(() => {
     if (!ticker) return;
@@ -119,7 +120,17 @@ const StockDetail: React.FC = () => {
     return (
       <AppLayout>
         <div className="max-w-[1400px] mx-auto p-10 flex items-center justify-center h-96">
-          <p className="text-outline text-sm">Could not load data for {ticker}.</p>
+          <div className="text-center space-y-4">
+            <p className="text-outline text-sm">Could not load data for {ticker}.</p>
+            {ticker?.toString().toUpperCase() === "KKR" && (
+              <p className="text-xs text-outline-variant max-w-xs mx-auto">
+                Note: KKR is listed on NYSE. QuantEdge currently covers NSE/BSE stocks only.
+              </p>
+            )}
+            <Link href="/dashboard" className="text-primary-container text-xs font-bold hover:underline">
+              Return to Dashboard
+            </Link>
+          </div>
         </div>
       </AppLayout>
     );
@@ -154,7 +165,11 @@ const StockDetail: React.FC = () => {
                   </span>
                 </div>
               )}
-              <span className="text-[10px] text-outline font-medium">Data delayed ~15 min</span>
+              {stock.last_updated && (
+                <span className="text-[10px] text-outline font-medium">
+                  Data as of {new Date(stock.last_updated).toLocaleTimeString("en-IN", { hour: '2-digit', minute: '2-digit' })} IST
+                </span>
+              )}
             </div>
           </div>
           <Link
@@ -865,15 +880,27 @@ const StockDetail: React.FC = () => {
                     and synthesis using Groq LLaMA 3.3 70B.
                   </p>
                 </div>
+
+                {aiError && (
+                  <div className="bg-red-50 border border-red-200 text-red-600 px-4 py-3 rounded-lg text-xs max-w-md">
+                    <strong>Error:</strong> {aiError}
+                  </div>
+                )}
+
                 <button
                   onClick={async () => {
                     setAiLoading(true);
+                    setAiError(null);
                     try {
                       const res = await fetch(`/api/ai/analyze/${ticker}`);
                       const data = await res.json();
+                      if (!res.ok) {
+                        throw new Error(data.detail || data.error || "AI Analysis failed");
+                      }
                       setAiAnalysis(data);
-                    } catch (err) {
+                    } catch (err: any) {
                       console.error("AI fetch error:", err);
+                      setAiError(err.message);
                     } finally {
                       setAiLoading(false);
                     }
@@ -910,7 +937,14 @@ const StockDetail: React.FC = () => {
                     <div>
                       <p className="text-[10px] font-bold text-outline uppercase tracking-widest mb-2">AI Verdict</p>
                       <h3 className="text-4xl font-bold tracking-tight">{aiAnalysis.verdict?.verdict}</h3>
-                      <p className="text-sm text-outline mt-1">Confidence: {aiAnalysis.verdict?.confidence}%</p>
+                      <div className="flex items-center gap-3 mt-1">
+                        <p className="text-sm text-outline">Confidence: {aiAnalysis.verdict?.confidence}%</p>
+                        {aiAnalysis.verdict?.weighted_score != null && (
+                          <span className="text-[11px] font-bold px-2 py-0.5 rounded bg-primary-container/10 text-primary-container">
+                            Score: {aiAnalysis.verdict?.weighted_score}/100
+                          </span>
+                        )}
+                      </div>
                     </div>
                     <div className="text-right">
                       <Badge variant={
