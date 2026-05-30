@@ -13,7 +13,7 @@ describe("Sidebar component", () => {
     render(<Sidebar />);
     expect(screen.getByText("Dashboard")).toBeInTheDocument();
     expect(screen.getByText("Screener")).toBeInTheDocument();
-    expect(screen.getByText("Portfolios")).toBeInTheDocument();
+    expect(screen.getByText("Sectors")).toBeInTheDocument();
   });
 
   it("applies active styles to current route", () => {

@@ -29,6 +29,7 @@ const StockDetail: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [aiAnalysis, setAiAnalysis] = useState<any>(null);
   const [aiLoading, setAiLoading] = useState(false);
+  const [aiSteps, setAiSteps] = useState<Record<number, { label: string; done: boolean; data?: any }>>({});
   const [historyData, setHistoryData] = useState<any[]>([]);
   const [chartPeriod, setChartPeriod] = useState("1y");
   const [chartLoading, setChartLoading] = useState(false);
@@ -891,13 +892,50 @@ const StockDetail: React.FC = () => {
                   onClick={async () => {
                     setAiLoading(true);
                     setAiError(null);
+                    setAiAnalysis(null);
+                    setAiSteps({});
                     try {
-                      const res = await fetch(`/api/ai/analyze/${ticker}`);
-                      const data = await res.json();
+                      const res = await fetch(`/api/ai/analyze/${ticker}?stream=true`);
                       if (!res.ok) {
-                        throw new Error(data.detail || data.error || "AI Analysis failed");
+                        const errData = await res.json().catch(() => ({}));
+                        throw new Error(errData.detail || errData.error || "AI Analysis failed");
                       }
-                      setAiAnalysis(data);
+                      const reader = res.body?.getReader();
+                      if (!reader) throw new Error("No stream available");
+                      const decoder = new TextDecoder();
+                      let buffer = "";
+                      while (true) {
+                        const { done, value } = await reader.read();
+                        if (done) break;
+                        buffer += decoder.decode(value, { stream: true });
+                        const lines = buffer.split("\n");
+                        buffer = lines.pop() || "";
+                        let currentEvent = "";
+                        for (const line of lines) {
+                          if (line.startsWith("event: ")) {
+                            currentEvent = line.slice(7).trim();
+                          } else if (line.startsWith("data: ")) {
+                            try {
+                              const payload = JSON.parse(line.slice(6));
+                              if (currentEvent === "status") {
+                                setAiSteps(prev => ({
+                                  ...prev,
+                                  [payload.step]: { label: payload.label, done: !!payload.done },
+                                }));
+                              } else if (currentEvent === "step") {
+                                setAiSteps(prev => ({
+                                  ...prev,
+                                  [payload.step]: { label: payload.label, done: true, data: payload.data },
+                                }));
+                              } else if (currentEvent === "complete") {
+                                setAiAnalysis(payload);
+                              } else if (currentEvent === "error") {
+                                setAiError(payload.message);
+                              }
+                            } catch {}
+                          }
+                        }
+                      }
                     } catch (err: any) {
                       console.error("AI fetch error:", err);
                       setAiError(err.message);
@@ -917,14 +955,38 @@ const StockDetail: React.FC = () => {
               <div className="bg-surface-container-lowest rounded-2xl p-12 border border-outline-variant/10 flex flex-col items-center gap-6">
                 <Loader2 size={32} className="animate-spin text-primary-container" />
                 <div className="text-center">
-                  <p className="font-bold mb-1">Running 4-step AI analysis...</p>
-                  <p className="text-sm text-outline">Analysing financials → sentiment → peers → synthesis</p>
+                  <p className="font-bold mb-1">Running AI analysis...</p>
+                  <p className="text-sm text-outline">Steps 1-3 run in parallel for speed</p>
                 </div>
-                <div className="flex gap-3 text-[10px] font-bold uppercase tracking-widest text-outline">
-                  <span className="bg-surface-container px-3 py-1 rounded-full">Step 1: Financials</span>
-                  <span className="bg-surface-container px-3 py-1 rounded-full">Step 2: News</span>
-                  <span className="bg-surface-container px-3 py-1 rounded-full">Step 3: Peers</span>
-                  <span className="bg-surface-container px-3 py-1 rounded-full">Step 4: Synthesis</span>
+                <div className="flex flex-col gap-2 w-full max-w-sm">
+                  {[
+                    { step: 0, name: "Data Fetch" },
+                    { step: 1, name: "Financials" },
+                    { step: 2, name: "News Sentiment" },
+                    { step: 3, name: "Peer Benchmarking" },
+                    { step: 4, name: "Synthesis" },
+                  ].map(({ step, name }) => {
+                    const s = aiSteps[step];
+                    const isDone = s?.done;
+                    const isActive = s && !s.done;
+                    return (
+                      <div key={step} className={`flex items-center gap-3 px-4 py-2 rounded-xl text-xs font-bold uppercase tracking-widest transition-all duration-300 ${
+                        isDone ? 'bg-tertiary-container/20 text-tertiary-container' :
+                        isActive ? 'bg-primary-container/10 text-primary-container' :
+                        'bg-surface-container text-outline'
+                      }`}>
+                        {isDone ? (
+                          <span className="text-tertiary-container">✓</span>
+                        ) : isActive ? (
+                          <Loader2 size={12} className="animate-spin" />
+                        ) : (
+                          <span className="w-3 h-3 rounded-full bg-outline/20" />
+                        )}
+                        <span>{name}</span>
+                        {s?.label && <span className="ml-auto text-[10px] font-medium normal-case opacity-70">{s.label}</span>}
+                      </div>
+                    );
+                  })}
                 </div>
               </div>
             )}

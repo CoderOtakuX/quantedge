@@ -27,13 +27,14 @@ export async function POST(
       return NextResponse.json({ error: `Backend error: ${response.status}`, details: errText }, { status: response.status });
     }
     
-    const blob = await response.blob()
+    const arrayBuffer = await response.arrayBuffer()
     
-    return new NextResponse(blob, {
+    return new NextResponse(arrayBuffer, {
       status: 200,
       headers: {
         'Content-Type': 'application/vnd.openxmlformats-officedocument.presentationml.presentation',
         'Content-Disposition': `attachment; filename="${ticker.toUpperCase()}_QuantEdge_Report.pptx"`,
+        'Content-Length': String(arrayBuffer.byteLength),
       },
     })
   } catch (error) {

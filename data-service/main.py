@@ -37,6 +37,7 @@ def health():
 
 @app.get("/api/stock/{ticker}/overview")
 def stock_overview(ticker: str):
+    import math
     key = f"overview:{ticker}"
     cached = cache.get(key)
     if cached: return cached
@@ -58,6 +59,12 @@ def stock_overview(ticker: str):
         **price_data, 
         "last_updated": datetime.datetime.now().isoformat()
     }
+    
+    # Sanitize: replace inf/NaN with None to avoid JSON serialization errors
+    for k, v in result.items():
+        if isinstance(v, float) and (math.isnan(v) or math.isinf(v)):
+            result[k] = None
+    
     cache.set(key, result, ttl_seconds=900)
     return result
 

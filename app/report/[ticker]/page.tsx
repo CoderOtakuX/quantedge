@@ -89,15 +89,22 @@ export default function ReportGenerator() {
       
       // Step 3: Trigger Download
       setStepIndex(3);
-      const blob = await reportRes.blob();
+      const arrayBuffer = await reportRes.arrayBuffer();
+      const blob = new Blob([arrayBuffer], {
+        type: 'application/vnd.openxmlformats-officedocument.presentationml.presentation'
+      });
       const url = window.URL.createObjectURL(blob);
       const a = document.createElement('a');
+      a.style.display = 'none';
       a.href = url;
-      a.download = `${ticker}_QuantEdge_Report.pptx`;
+      a.download = `${ticker.toUpperCase()}_QuantEdge_Report.pptx`;
       document.body.appendChild(a);
       a.click();
-      window.URL.revokeObjectURL(url);
-      document.body.removeChild(a);
+      // Small delay before cleanup to ensure download starts
+      setTimeout(() => {
+        window.URL.revokeObjectURL(url);
+        document.body.removeChild(a);
+      }, 200);
       
       setStepIndex(4);
       setLoading(false);
