@@ -30,7 +30,8 @@ Our 4-step quantitative synthesis compiles financials, sentiment, and peer bench
 ### 📊 Midnight Executive PPTX Report Generator
 * **Automatic crore scaling:** Formats absolute figures consistently to **₹ Cr** denominations.
 * **Robust fallback engines:** Prevents "N/A" outputs by running dynamic price-to-earnings fallback calculations (`trailingPE` ➔ `forwardPE` ➔ `Manual Price/EPS`).
-* **High-fidelity chart bindings:** Injects real multi-year growth structures into presentation slide frames.
+* **High-fidelity chart bindings:** Injects real multi-year growth structures into presentation slide frames. [IDEA_QuantEdge_Report.pptx](https://github.com/user-attachments/files/28420523/IDEA_QuantEdge_Report.pptx)
+
 
 ### 💬 Real-Time Streaming Brokerage Chatbot
 * **Native SSE integration:** Streams analytical text tokens directly to a native chat interface, enabling instant conversational answers regarding company financials.
