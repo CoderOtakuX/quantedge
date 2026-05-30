@@ -8,11 +8,11 @@ QuantEdge is a premium, state-of-the-art financial analysis and research dashboa
 
 ### 1. Live Interactive Analytics Dashboard
 Explore live price movements, multi-year interactive financial statements, and shareholder patterns built on beautiful, fluid Tailwind and Framer Motion layouts.
-![QuantEdge Stock Analysis Panel](public/screenshots/tcs_page_check.png)
+<img width="1898" height="922" alt="image" src="https://github.com/user-attachments/assets/156bbef8-ba48-4dcb-b80e-bf06c27d437e" />
 
 ### 2. Multi-Signal Progressive AI Analysis
 Our 4-step quantitative synthesis compiles financials, sentiment, and peer benchmarking in real-time, feeding a strict weighted rubric to deliver Buy/Hold/Avoid verdicts.
-![Live 4-Step Analysis Progress](public/screenshots/test_tcs_stock.webp)
+<img width="1567" height="659" alt="image" src="https://github.com/user-attachments/assets/9015675a-08d6-4167-b3bc-622cb89c77bc" />
 
 ---
 
